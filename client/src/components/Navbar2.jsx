@@ -23,10 +23,18 @@ import {
 	faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-export default function Navbar() {
+// Redux Hooks
+import { useSelector, useDispatch } from 'react-redux';
+
+// Actions
+import { setIsAuthenticated } from '../actions/auth-actions';
+
+export default function Navbar2() {
 	const [showMenu, setShowMenu] = useState(false);
 	const size = useWindowSize();
+	const dispatch = useDispatch();
 
 	let menu;
 
@@ -40,28 +48,39 @@ export default function Navbar() {
 					/>
 				</IconSizer>
 				<MenuContainer>
-					<Link to='/' className='link'>
+					<Link to='/livefeed' className='link'>
 						<LogoImg2 src={Logo} alt='' />
 					</Link>
 					<Line />
 					<Link to='/login' className='link'>
-						<MenuItems>SIGN IN</MenuItems>
+						<MenuItems>LIVE FEED</MenuItems>
 					</Link>
 					<Line />
-					<Link to='/register' className='link'>
-						<MenuItems>SIGN UP</MenuItems>
+					<Link to='/profile' className='link'>
+						<MenuItems>PROFILE</MenuItems>
 					</Link>
+					<Line />
+					<MenuItems onClick={(e) => logout(e)}>
+						LOG OUT
+					</MenuItems>
 					<Line />
 				</MenuContainer>
 			</Overlay>
 		);
 	}
 
+	const logout = (e) => {
+		e.preventDefault();
+		localStorage.removeItem('token');
+		setIsAuthenticated(dispatch, false);
+		toast.success('Logged out successfully');
+	};
+
 	return (
 		<>
 			<Nav>
 				<NavLeft>
-					<Link to='/' className='link'>
+					<Link to='/livefeed' className='link'>
 						<LogoImg src={Logo} alt='' />
 					</Link>
 				</NavLeft>
@@ -69,12 +88,15 @@ export default function Navbar() {
 					<NavLinkContainer>
 						{size.width > 600 ? (
 							<>
-								<Link to='/login' className='link'>
-									<NavLink>Sign in</NavLink>
+								<Link to='/livefeed' className='link'>
+									<NavLink>Live Feed</NavLink>
 								</Link>
-								<Link to='/register' className='link'>
-									<Special>Sign up</Special>
+								<Link to='/profile' className='link'>
+									<NavLink>Profile</NavLink>
 								</Link>
+								<Special onClick={(e) => logout(e)}>
+									Logout
+								</Special>
 							</>
 						) : (
 							<IconSizer2>
