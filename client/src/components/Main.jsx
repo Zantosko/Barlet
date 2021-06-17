@@ -4,6 +4,7 @@ import Home from './Home';
 import Login from './Login';
 import Register from './Register';
 import LiveFeed from './LiveFeed';
+import Profile from './Profile';
 
 // React Toastify
 import { toast } from 'react-toastify';
@@ -78,7 +79,17 @@ export default function Main() {
 							<Redirect to='/login' />
 						)
 					}
-					// component={LiveFeed}
+				/>
+				<Route
+					exact
+					path='/profile/:id'
+					render={(props) =>
+						isAuthenticated === true ? (
+							<Profile {...props} />
+						) : (
+							<Redirect to='/login' />
+						)
+					}
 				/>
 				{/* <Route path='*' component={Error} /> */}
 			</Switch>

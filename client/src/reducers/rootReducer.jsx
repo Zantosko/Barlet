@@ -6,6 +6,8 @@ import username from './registration/usernameReducer';
 import password from './registration/passwordReducer';
 import rePassword from './registration/rePasswordReducer';
 import isAuthenticated from '../reducers/authReducer';
+import userInfo from './userInfoReducer';
+import profileInfo from './profileReducer';
 
 const rootReducer = combineReducers({
 	firstName,
@@ -15,6 +17,8 @@ const rootReducer = combineReducers({
 	password,
 	rePassword,
 	isAuthenticated,
+	userInfo,
+	profileInfo,
 });
 
 export default rootReducer;

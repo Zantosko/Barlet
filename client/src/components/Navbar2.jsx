@@ -35,6 +35,7 @@ export default function Navbar2() {
 	const [showMenu, setShowMenu] = useState(false);
 	const size = useWindowSize();
 	const dispatch = useDispatch();
+	const userInfo = useSelector((state) => state.userInfo);
 
 	let menu;
 
@@ -56,7 +57,10 @@ export default function Navbar2() {
 						<MenuItems>LIVE FEED</MenuItems>
 					</Link>
 					<Line />
-					<Link to='/profile' className='link'>
+					<Link
+						to={`/profile/${userInfo.id}`}
+						className='link'
+					>
 						<MenuItems>PROFILE</MenuItems>
 					</Link>
 					<Line />
@@ -91,7 +95,10 @@ export default function Navbar2() {
 								<Link to='/livefeed' className='link'>
 									<NavLink>Live Feed</NavLink>
 								</Link>
-								<Link to='/profile' className='link'>
+								<Link
+									to={`/profile/${userInfo.id}`}
+									className='link'
+								>
 									<NavLink>Profile</NavLink>
 								</Link>
 								<Special onClick={(e) => logout(e)}>

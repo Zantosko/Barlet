@@ -11,11 +11,14 @@ app.use(cors());
 
 //* Routes
 
-//? Index Route
+//? Index Routes
 app.use('/', require('./routes/index'));
 
-//? Authorization Route
+//? Authorization Routes
 app.use('/auth', require('./routes/jwtAuth'));
+
+//? File Upload Routes
+app.use('/user', require('./routes/fileUpload'));
 
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
