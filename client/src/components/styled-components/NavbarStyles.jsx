@@ -74,9 +74,10 @@ export const Overlay = styled.div`
 	height: 100vh;
 	width: 100vw;
 	background: linear-gradient(75deg, #08aeef, #fff);
-	position: fixed;
+	position: absolute;
 	top: 0;
 	left: 0;
+	z-index: 100;
 `;
 
 export const MenuContainer = styled.div`

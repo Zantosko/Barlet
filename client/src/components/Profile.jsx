@@ -1,30 +1,55 @@
 import React, { useEffect } from 'react';
 import Navbar2 from './Navbar2';
+import Post from './Post';
 import {
 	ProfileContainer,
 	ProfileCard,
-	Special,
 	FileForm,
 	FileLabel,
 	File,
+	PostsContainer,
+	BioContainer,
+	Special,
+	Special2,
+	InputContainer,
+	PostInput,
+	PostButton,
+	RadioContainer,
+	PostContainer2,
 } from './styled-components/ProfileStyles';
-import { Avatar } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { Avatar, Radio, Spin, Space } from 'antd';
+import {
+	UserOutlined,
+	EditOutlined,
+} from '@ant-design/icons';
+import { Tabs } from 'antd';
+
 import { toast } from 'react-toastify';
 
+// Redux Hooks
 import { useSelector, useDispatch } from 'react-redux';
 
+// Redux Actions
 import { setProfileInfo } from '../actions/profileInfo-actions';
+import { setPostText } from '../actions/posts/postText-actions';
+import { setRank } from '../actions/posts/rank-actions';
+import { setPosts } from '../actions/posts/getPosts-actions';
 
-export default function Profile() {
+const { TabPane } = Tabs;
+
+export default function Profile({ match }) {
 	const dispatch = useDispatch();
 	const profileInfo = useSelector(
 		(state) => state.profileInfo
 	);
 	const userInfo = useSelector((state) => state.userInfo);
+	const postText = useSelector((state) => state.postText);
+	const rank = useSelector((state) => state.rank);
+	const posts = useSelector((state) => state.posts);
 
 	useEffect(() => {
 		setProfileInfo(dispatch);
+		setPosts(dispatch);
 	}, []);
 
 	const changeProfilePic = async (e) => {
@@ -42,9 +67,11 @@ export default function Profile() {
 						{
 							method: 'PUT',
 							headers: { token: localStorage.token },
+							body: data,
 						}
 					);
-					if (response.data.status) {
+					if (response) {
+						console.log(response);
 						toast.info('Profile Photo Changed');
 					}
 				} else {
@@ -53,6 +80,42 @@ export default function Profile() {
 			} else {
 				toast.error('File size is too large');
 			}
+		}
+	};
+
+	const onSubmitPost = async (e) => {
+		e.preventDefault();
+
+		try {
+			const { id } = match.params;
+			const convertIdToNumber = Number(id);
+			const body = {
+				postText,
+				rank,
+				userId: convertIdToNumber,
+			};
+
+			const response = await fetch(
+				'http://localhost:4001/user/post',
+				{
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(body),
+				}
+			);
+
+			const parseResponse = await response.json();
+
+			if (response.status === 200) {
+				toast.info(parseResponse);
+				setPostText(dispatch, '');
+				setRank(dispatch, 1);
+				window.location.reload();
+			} else {
+				toast.error(parseResponse);
+			}
+		} catch (err) {
+			console.error(err.message);
 		}
 	};
 
@@ -69,17 +132,90 @@ export default function Profile() {
 									icon={<UserOutlined />}
 								/>
 							) : (
-								<img src={profileInfo.image} alt='' />
+								<img
+									src={profileInfo.profileImage}
+									alt=''
+								/>
 							)}
 						</FileLabel>
+						<File
+							type='file'
+							name='profileImage'
+							id='pp-upload'
+							onChange={changeProfilePic}
+						/>
 					</FileForm>
-					<File
-						type='file'
-						name='content'
-						id='pp-upload'
-						onChange={changeProfilePic}
-					/>
+					<BioContainer>
+						<h1>
+							{userInfo.firstName} {userInfo.lastName}
+						</h1>
+						<h2>
+							{profileInfo.bio == null
+								? 'Bio not written'
+								: profileInfo.bio}
+						</h2>
+						<Special>
+							<EditOutlined />
+							<Special2>Edit bio</Special2>
+						</Special>
+					</BioContainer>
 				</ProfileCard>
+				<PostsContainer>
+					<h1>Posts & Reviews</h1>
+					<Tabs defaultActiveKey='1'>
+						<TabPane tab='Posts' key='1'>
+							<InputContainer onSubmit={onSubmitPost}>
+								<PostInput
+									type='text'
+									name='postText'
+									placeholder='What bar are you at and how is it?'
+									value={postText}
+									onChange={(e) =>
+										setPostText(dispatch, e.target.value)
+									}
+								/>
+								<h3>Whats the crowd like?</h3>
+								<RadioContainer>
+									<Radio.Group
+										onChange={(e) =>
+											setRank(dispatch, e.target.value)
+										}
+										value={rank}
+										name='rank'
+									>
+										<Radio value={1}>🔥 High volume</Radio>
+										<Radio value={2}>🧊 Laid back</Radio>
+										<Radio value={3}>💀 Dead</Radio>
+										<Radio value={4}>
+											😎 College crowd
+										</Radio>
+										<Radio value={5}>👴 Older crowd</Radio>
+									</Radio.Group>
+								</RadioContainer>
+								<PostButton type='submit'>Send</PostButton>
+							</InputContainer>
+							<PostContainer2>
+								{posts[0] != null ? (
+									posts[0].map((post, idx) => {
+										return (
+											<Post
+												key={idx}
+												postInfo={post}
+											></Post>
+										);
+									})
+								) : (
+									<Space size='middle'>
+										<Spin size='large'></Spin>
+									</Space>
+								)}
+							</PostContainer2>
+						</TabPane>
+						<TabPane tab='Reviews' key='2'>
+							Content of Tab Pane 2
+						</TabPane>
+					</Tabs>
+				</PostsContainer>
 			</ProfileContainer>
 		</>
 	);

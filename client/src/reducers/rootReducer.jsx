@@ -8,6 +8,9 @@ import rePassword from './registration/rePasswordReducer';
 import isAuthenticated from '../reducers/authReducer';
 import userInfo from './userInfoReducer';
 import profileInfo from './profileReducer';
+import postText from './posts/postTextReducer';
+import rank from './posts/rankReducer';
+import posts from './posts/getPostsReducer';
 
 const rootReducer = combineReducers({
 	firstName,
@@ -19,6 +22,9 @@ const rootReducer = combineReducers({
 	isAuthenticated,
 	userInfo,
 	profileInfo,
+	postText,
+	rank,
+	posts,
 });
 
 export default rootReducer;

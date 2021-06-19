@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const app = express();
 const cors = require('cors');
+const path = require('path');
 
 const port = process.env.PORT || 4001;
 
@@ -18,7 +19,7 @@ app.use('/', require('./routes/index'));
 app.use('/auth', require('./routes/jwtAuth'));
 
 //? File Upload Routes
-app.use('/user', require('./routes/fileUpload'));
+app.use('/user', require('./routes/user'));
 
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
