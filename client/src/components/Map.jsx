@@ -27,7 +27,7 @@ export default function Map() {
 
 	const { isLoaded, loadError } = useLoadScript({
 		googleMapsApiKey:
-			process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+			'AIzaSyAcAgtdILhGOPdU9rfavxLUNh12XlGHATQ',
 		libraries,
 	});
 

@@ -11,3 +11,10 @@
 .link {
 	text-decoration: none;
 }
+
+.spinner {
+	margin-top: 3rem;
+	width: 80%;
+	display: flex;
+	justify-content: center;
+}

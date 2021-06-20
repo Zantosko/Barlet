@@ -39,6 +39,23 @@ router.get('/profile-pic', async (req, res) => {
 	});
 });
 
+router.put('/update-bio', async (req, res) => {
+	try {
+		const { bio, userId } = req.body;
+		const user = await Profile.findOne({
+			where: {
+				userId: userId,
+			},
+		});
+
+		user.update({ bio });
+		res.status(200).json('Your bio has been updated');
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json('Server error');
+	}
+});
+
 router.post('/post', async (req, res) => {
 	try {
 		const { postText, rank, userId } = req.body;
@@ -58,7 +75,7 @@ router.post('/post', async (req, res) => {
 		res.status(200).json('Post submitted');
 	} catch (err) {
 		console.error(err.message);
-		res.status(500).send('Server error');
+		res.status(500).json('Server error');
 	}
 });
 

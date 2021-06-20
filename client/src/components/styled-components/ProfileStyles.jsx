@@ -7,7 +7,6 @@ export const ProfileContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	overflow-y: scroll;
 `;
 
 export const ProfileCard = styled.div`
@@ -63,7 +62,7 @@ export const Special2 = styled.span`
 `;
 
 export const PostsContainer = styled.div`
-	height: 100%;
+	height: 1000vh;
 	width: 400px;
 	padding: 1rem;
 	display: flex;
@@ -134,5 +133,18 @@ export const PostContainer2 = styled.div`
 
 	@media (min-width: 800px) {
 		width: 800px;
+	}
+`;
+
+export const ModalInput = styled.input`
+	height: 30px;
+	width: 93%;
+	border: 1px solid #08aeef;
+	border-radius: 4px;
+	padding: 1rem;
+	margin: 1rem;
+
+	&:focus {
+		outline-color: #08efbd;
 	}
 `;

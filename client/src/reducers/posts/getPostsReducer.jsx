@@ -5,9 +5,9 @@ const initialState = [];
 const posts = (state = initialState, action) => {
 	switch (action.type) {
 		case GET_POSTS:
-			const postList = [...state];
-			postList.push(action.payload);
-			return postList;
+			state = action.payload;
+			state.sort((a, b) => b.id - a.id);
+			return state;
 
 		default:
 			return state;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar2 from './Navbar2';
 import Post from './Post';
 import {
@@ -16,8 +16,9 @@ import {
 	PostButton,
 	RadioContainer,
 	PostContainer2,
+	ModalInput,
 } from './styled-components/ProfileStyles';
-import { Avatar, Radio, Spin, Space } from 'antd';
+import { Avatar, Radio, Spin, Space, Modal } from 'antd';
 import {
 	UserOutlined,
 	EditOutlined,
@@ -83,6 +84,38 @@ export default function Profile({ match }) {
 		}
 	};
 
+	const editBio = async (e) => {
+		try {
+			const { id } = match.params;
+			const convertIdToNumber = Number(id);
+			const body = {
+				bio: modalText,
+				userId: convertIdToNumber,
+			};
+
+			const response = await fetch(
+				'http://localhost:4001/user/update-bio',
+				{
+					method: 'PUT',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(body),
+				}
+			);
+
+			const parseResponse = await response.json();
+
+			if (response.status === 200) {
+				toast.info(parseResponse);
+				setModalText('');
+				setProfileInfo(dispatch);
+			} else {
+				toast.error(parseResponse);
+			}
+		} catch (err) {
+			console.error(err.message);
+		}
+	};
+
 	const onSubmitPost = async (e) => {
 		e.preventDefault();
 
@@ -117,6 +150,24 @@ export default function Profile({ match }) {
 		} catch (err) {
 			console.error(err.message);
 		}
+	};
+
+	const [isModalVisible, setIsModalVisible] =
+		useState(false);
+
+	const [modalText, setModalText] = useState('');
+
+	const showModal = () => {
+		setIsModalVisible(true);
+	};
+
+	const handleOk = () => {
+		editBio();
+		setIsModalVisible(false);
+	};
+
+	const handleCancel = () => {
+		setIsModalVisible(false);
 	};
 
 	return (
@@ -156,7 +207,26 @@ export default function Profile({ match }) {
 						</h2>
 						<Special>
 							<EditOutlined />
-							<Special2>Edit bio</Special2>
+							<Special2 onClick={showModal}>
+								Edit bio
+							</Special2>
+							<Modal
+								title='Edit Bio'
+								visible={isModalVisible}
+								onOk={handleOk}
+								okText='Submit Changes'
+								onCancel={handleCancel}
+							>
+								<ModalInput
+									type='text'
+									name='bio'
+									placeholder='Write new bio...'
+									value={modalText}
+									onChange={(e) =>
+										setModalText(e.target.value)
+									}
+								/>
+							</Modal>
 						</Special>
 					</BioContainer>
 				</ProfileCard>
@@ -195,8 +265,8 @@ export default function Profile({ match }) {
 								<PostButton type='submit'>Send</PostButton>
 							</InputContainer>
 							<PostContainer2>
-								{posts[0] != null ? (
-									posts[0].map((post, idx) => {
+								{posts != null ? (
+									posts.map((post, idx) => {
 										return (
 											<Post
 												key={idx}
@@ -205,7 +275,7 @@ export default function Profile({ match }) {
 										);
 									})
 								) : (
-									<Space size='middle'>
+									<Space size='middle' className='spinner'>
 										<Spin size='large'></Spin>
 									</Space>
 								)}
