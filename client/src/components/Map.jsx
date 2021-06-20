@@ -26,9 +26,7 @@ export default function Map() {
 	};
 
 	const { isLoaded, loadError } = useLoadScript({
-		googleMapsApiKey:
-			'AIzaSyAcAgtdILhGOPdU9rfavxLUNh12XlGHATQ',
-		libraries,
+		googleMapsApiKey: libraries,
 	});
 
 	if (loadError) return 'Error loading maps';
@@ -52,3 +50,17 @@ export default function Map() {
 		</div>
 	);
 }
+
+// function Search({ panTo }) {
+//   const {
+//     ready,
+//     value,
+//     suggestions: { status, data },
+//     setValue,
+//     clearSuggestions,
+//   } = usePlacesAutocomplete({
+//     requestOptions: {
+//       location: { lat: () => 43.6532, lng: () => -79.3832 },
+//       radius: 100 * 1000,
+//     },
+//   });
