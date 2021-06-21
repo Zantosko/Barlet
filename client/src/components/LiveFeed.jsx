@@ -9,6 +9,7 @@ import Map from './Map';
 
 export default function LiveFeed() {
 	const dispatch = useDispatch();
+	const showMenu = useSelector((state) => state.showMenu);
 
 	useEffect(() => {
 		setUserInfo(dispatch);
@@ -17,7 +18,13 @@ export default function LiveFeed() {
 	return (
 		<>
 			<Navbar2 />
-			<FeedContainer>
+			<FeedContainer
+				style={
+					showMenu === true
+						? { zIndex: '-1' }
+						: { zIndex: '0' }
+				}
+			>
 				<Map />
 			</FeedContainer>
 		</>

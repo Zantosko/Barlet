@@ -14,4 +14,6 @@ export const FeedContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	position: relative;
+	z-index: 0;
 `;

@@ -1,19 +1,26 @@
-import React from 'react';
+import React, {
+	useRef,
+	useCallback,
+	useEffect,
+	useState,
+} from 'react';
 import {
 	GoogleMap,
 	useLoadScript,
 	Marker,
 	InfoWindow,
 } from '@react-google-maps/api';
-import { process } from 'ipaddr.js';
 import { Title } from './styled-components/LiveFeedStyles';
 
+const libraries = ['places'];
 export default function Map() {
-	const libraries = ['places'];
 	const mapContainerStyle = {
-		width: '60vw',
-		height: '60vh',
+		width: '70vw',
+		height: '70vh',
 	};
+
+	const [places, setPlaces] = useState('');
+	const mapRef = useRef();
 
 	const center = {
 		lat: 29.749907,
@@ -25,8 +32,34 @@ export default function Map() {
 		zoomControl: true,
 	};
 
+	const onMapMounted = useCallback((map) => {
+		mapRef.current = map;
+	}, []);
+
+	const fetchPlaces = () => {
+		const bounds = mapRef.current.getBounds();
+		const service =
+			new window.google.maps.places.PlacesService(
+				mapRef.current
+			);
+		const request = {
+			bounds: bounds,
+			type: ['bar'],
+		};
+		service.nearbySearch(request, (results, status) => {
+			if (
+				status ===
+				window.google.maps.places.PlacesServiceStatus.OK
+			) {
+				setPlaces(results);
+			}
+		});
+	};
+
 	const { isLoaded, loadError } = useLoadScript({
-		googleMapsApiKey: libraries,
+		googleMapsApiKey:
+			process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+		libraries,
 	});
 
 	if (loadError) return 'Error loading maps';
@@ -36,9 +69,12 @@ export default function Map() {
 		<div>
 			<GoogleMap
 				mapContainerStyle={mapContainerStyle}
-				zoom={8}
+				zoom={11}
 				center={center}
 				options={options}
+				onLoad={onMapMounted}
+				onTilesLoaded={fetchPlaces}
+				onBoundsChanged={fetchPlaces}
 			>
 				<Title>
 					Bars Near You{' '}
@@ -46,21 +82,17 @@ export default function Map() {
 						🍺 🍸
 					</span>
 				</Title>
+				{places &&
+					places.map((place, i) => (
+						<Marker
+							key={i}
+							position={{
+								lat: place.geometry.location.lat(),
+								lng: place.geometry.location.lng(),
+							}}
+						/>
+					))}
 			</GoogleMap>
 		</div>
 	);
 }
-
-// function Search({ panTo }) {
-//   const {
-//     ready,
-//     value,
-//     suggestions: { status, data },
-//     setValue,
-//     clearSuggestions,
-//   } = usePlacesAutocomplete({
-//     requestOptions: {
-//       location: { lat: () => 43.6532, lng: () => -79.3832 },
-//       radius: 100 * 1000,
-//     },
-//   });

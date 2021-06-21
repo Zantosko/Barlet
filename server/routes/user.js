@@ -4,7 +4,19 @@ const authorization = require('../middleware/authorization');
 const path = require('path');
 const multer = require('multer');
 
-const upload = multer({ dest: '../public/uploads/' });
+const multerConfig = multer.diskStorage({
+	destination: (req, file, callback) => {
+		callback(null, 'public/uploads/');
+	},
+	filename: (req, file, callback) => {
+		const ext = file.mimetype.split('/')[1];
+		callback(null, `image-${Date.now()}.${ext}`);
+	},
+});
+
+const upload = multer({
+	storage: multerConfig,
+});
 
 router.put(
 	'/profile-pic',
@@ -18,11 +30,8 @@ router.put(
 		});
 
 		const { file } = req;
-		const profileImage =
-			file.fieldname +
-			'-' +
-			Date.now() +
-			path.extname(file.originalname);
+		console.log(file);
+		const profileImage = file.filename;
 		user.update({ profileImage });
 		res.status(200).json({
 			status: true,

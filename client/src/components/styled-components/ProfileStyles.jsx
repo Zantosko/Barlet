@@ -10,7 +10,7 @@ export const ProfileContainer = styled.div`
 `;
 
 export const ProfileCard = styled.div`
-	height: 300px;
+	height: 400px;
 	width: 400px;
 	background-color: #fff;
 	border: #ddd solid 1px;
@@ -18,10 +18,11 @@ export const ProfileCard = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: 1rem;
+	padding: 3rem;
 
 	@media (min-width: 800px) {
 		width: 700px;
+		height: 400px;
 	}
 `;
 
@@ -35,6 +36,30 @@ export const FileLabel = styled.label`
 
 export const File = styled.input`
 	display: none;
+`;
+
+export const ImageContainer = styled.div`
+	height: 200px;
+	width: 200px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`;
+
+export const ProfileImage = styled.img`
+	height: 100%;
+	width: 100%;
+	border-radius: 50%;
+	border: 3px solid #08aeef;
+`;
+
+export const Caption = styled.span`
+	margin-top: 1rem;
+	font-size: 13px;
+
+	&:hover {
+		color: #1c90ff;
+	}
 `;
 
 export const BioContainer = styled.div`
@@ -85,6 +110,8 @@ export const InputContainer = styled.form`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	position: relative;
+	z-index: 1;
 `;
 
 export const PostInput = styled.input`

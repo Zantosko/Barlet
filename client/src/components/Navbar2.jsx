@@ -30,12 +30,13 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Actions
 import { setIsAuthenticated } from '../actions/auth-actions';
+import { setShowMenu } from '../actions/showMenu-actions';
 
 export default function Navbar2() {
-	const [showMenu, setShowMenu] = useState(false);
 	const size = useWindowSize();
 	const dispatch = useDispatch();
 	const userInfo = useSelector((state) => state.userInfo);
+	const showMenu = useSelector((state) => state.showMenu);
 
 	let menu;
 
@@ -45,7 +46,7 @@ export default function Navbar2() {
 				<IconSizer>
 					<FontAwesomeIcon
 						icon={faTimes}
-						onClick={() => setShowMenu(!showMenu)}
+						onClick={() => setShowMenu(dispatch, !showMenu)}
 					/>
 				</IconSizer>
 				<MenuContainer>
@@ -109,7 +110,9 @@ export default function Navbar2() {
 							<IconSizer2>
 								<FontAwesomeIcon
 									icon={faBars}
-									onClick={() => setShowMenu(!showMenu)}
+									onClick={() =>
+										setShowMenu(dispatch, !showMenu)
+									}
 								/>
 							</IconSizer2>
 						)}

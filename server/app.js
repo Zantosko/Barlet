@@ -6,6 +6,12 @@ const path = require('path');
 
 const port = process.env.PORT || 4001;
 
+//* Shorten file path
+app.use(
+	'/uploads',
+	express.static(path.join(__dirname, 'public/uploads'))
+);
+
 //* Middleware
 app.use(express.json());
 app.use(cors());

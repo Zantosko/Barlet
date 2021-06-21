@@ -17,6 +17,9 @@ import {
 	RadioContainer,
 	PostContainer2,
 	ModalInput,
+	ImageContainer,
+	ProfileImage,
+	Caption,
 } from './styled-components/ProfileStyles';
 import { Avatar, Radio, Spin, Space, Modal } from 'antd';
 import {
@@ -47,6 +50,7 @@ export default function Profile({ match }) {
 	const postText = useSelector((state) => state.postText);
 	const rank = useSelector((state) => state.rank);
 	const posts = useSelector((state) => state.posts);
+	const showMenu = useSelector((state) => state.showMenu);
 
 	useEffect(() => {
 		setProfileInfo(dispatch);
@@ -74,6 +78,7 @@ export default function Profile({ match }) {
 					if (response) {
 						console.log(response);
 						toast.info('Profile Photo Changed');
+						window.location.reload();
 					}
 				} else {
 					toast.error('File type must be jpeg or png');
@@ -178,15 +183,24 @@ export default function Profile({ match }) {
 					<FileForm>
 						<FileLabel htmlFor='pp-upload'>
 							{profileInfo.profileImage == null ? (
-								<Avatar
-									size={180}
-									icon={<UserOutlined />}
-								/>
+								<ImageContainer>
+									<Avatar
+										size={180}
+										icon={<UserOutlined />}
+									/>
+									<Caption>(Change profile photo)</Caption>
+								</ImageContainer>
 							) : (
-								<img
-									src={profileInfo.profileImage}
-									alt=''
-								/>
+								<ImageContainer>
+									<ProfileImage
+										src={
+											process.env.REACT_APP_PUBLIC_FOLDER +
+											`${profileInfo.profileImage}`
+										}
+										alt=''
+									/>
+									<Caption>(Change profile photo)</Caption>
+								</ImageContainer>
 							)}
 						</FileLabel>
 						<File
@@ -232,9 +246,23 @@ export default function Profile({ match }) {
 				</ProfileCard>
 				<PostsContainer>
 					<h1>Posts & Reviews</h1>
-					<Tabs defaultActiveKey='1'>
+					<Tabs
+						defaultActiveKey='1'
+						style={
+							showMenu === true
+								? { zIndex: '-1' }
+								: { zIndex: '0' }
+						}
+					>
 						<TabPane tab='Posts' key='1'>
-							<InputContainer onSubmit={onSubmitPost}>
+							<InputContainer
+								onSubmit={onSubmitPost}
+								style={
+									showMenu === true
+										? { zIndex: '-1' }
+										: { zIndex: '0' }
+								}
+							>
 								<PostInput
 									type='text'
 									name='postText'
