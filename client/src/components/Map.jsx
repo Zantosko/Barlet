@@ -10,7 +10,12 @@ import {
 	Marker,
 	InfoWindow,
 } from '@react-google-maps/api';
-import { Title } from './styled-components/LiveFeedStyles';
+import {
+	Title,
+	CompassIcon,
+} from './styled-components/LiveFeedStyles';
+import Icon from '../assets/Bottle.png';
+import Compass from '../assets/compass.svg';
 
 const libraries = ['places'];
 export default function Map() {
@@ -20,9 +25,12 @@ export default function Map() {
 	};
 
 	const [places, setPlaces] = useState('');
+	const [selected, setSelected] = useState(null);
+
 	const mapRef = useRef();
 
-	const center = {
+	let center = {
+		// Houston
 		lat: 29.749907,
 		lng: -95.358421,
 	};
@@ -34,6 +42,11 @@ export default function Map() {
 
 	const onMapMounted = useCallback((map) => {
 		mapRef.current = map;
+	}, []);
+
+	const panTo = useCallback(({ lat, lng }) => {
+		mapRef.current.panTo({ lat, lng });
+		mapRef.current.setZoom(13);
 	}, []);
 
 	const fetchPlaces = () => {
@@ -69,8 +82,8 @@ export default function Map() {
 		<div>
 			<GoogleMap
 				mapContainerStyle={mapContainerStyle}
-				zoom={11}
-				center={center}
+				zoom={13}
+				center={center ?? Locate}
 				options={options}
 				onLoad={onMapMounted}
 				onTilesLoaded={fetchPlaces}
@@ -82,6 +95,7 @@ export default function Map() {
 						🍺 🍸
 					</span>
 				</Title>
+				<Locate panTo={panTo} />
 				{places &&
 					places.map((place, i) => (
 						<Marker
@@ -90,9 +104,68 @@ export default function Map() {
 								lat: place.geometry.location.lat(),
 								lng: place.geometry.location.lng(),
 							}}
+							icon={{
+								url: Icon,
+								scaledSize: new window.google.maps.Size(
+									30,
+									47
+								),
+							}}
+							onClick={() => {
+								setSelected(place);
+							}}
 						/>
 					))}
+				{selected ? (
+					<InfoWindow
+						position={{
+							lat: selected.geometry.location.lat(),
+							lng: selected.geometry.location.lng(),
+						}}
+						onCloseClick={() => {
+							setSelected(null);
+						}}
+					>
+						<div>
+							<img
+								src={selected.photos[0].getUrl()}
+								alt=''
+								height='100'
+								width='200'
+							/>
+							<h2>{selected.name}</h2>
+							<h4>{selected.vicinity}</h4>
+							<h4>rating: {selected.rating}</h4>
+						</div>
+					</InfoWindow>
+				) : null}
 			</GoogleMap>
 		</div>
+	);
+}
+
+function Locate({ panTo }) {
+	return (
+		<button
+			className='locate'
+			onClick={() => {
+				navigator.geolocation.getCurrentPosition(
+					(position) => {
+						panTo({
+							lat: position.coords.latitude,
+							lng: position.coords.longitude,
+						});
+					},
+					() => null
+				);
+			}}
+		>
+			<CompassIcon
+				src={Compass}
+				alt=''
+				width='50'
+				height='50'
+			/>
+		</button>
 	);
 }

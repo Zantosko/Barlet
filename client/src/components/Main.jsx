@@ -5,6 +5,7 @@ import Login from './Login';
 import Register from './Register';
 import LiveFeed from './LiveFeed';
 import Profile from './Profile';
+import Error from './Error';
 
 // React Toastify
 import { toast } from 'react-toastify';
@@ -52,7 +53,17 @@ export default function Main() {
 	return (
 		<>
 			<Switch>
-				<Route exact path='/' component={Home} />
+				<Route
+					exact
+					path='/'
+					render={(props) =>
+						isAuthenticated === false ? (
+							<Home {...props} />
+						) : (
+							<Redirect to='/livefeed' />
+						)
+					}
+				/>
 				<Route
 					exact
 					path='/register'
@@ -91,7 +102,7 @@ export default function Main() {
 						)
 					}
 				/>
-				{/* <Route path='*' component={Error} /> */}
+				<Route path='*' component={Error} />
 			</Switch>
 		</>
 	);

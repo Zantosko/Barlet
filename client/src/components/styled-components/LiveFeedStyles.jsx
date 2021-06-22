@@ -9,6 +9,12 @@ export const Title = styled.h1`
 	padding: 0.3rem;
 `;
 
+export const CompassIcon = styled.img`
+	&:hover {
+		cursor: pointer;
+	}
+`;
+
 export const FeedContainer = styled.div`
 	padding: 2rem;
 	display: flex;

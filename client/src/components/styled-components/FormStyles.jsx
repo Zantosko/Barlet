@@ -21,6 +21,19 @@ export const StyledForm = styled.form`
 	border-radius: 5px;
 `;
 
+export const ErrorBox = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: #fff;
+	height: 400px;
+	width: 400px;
+	padding: 4rem 1.5rem;
+	box-shadow: 0.1em 0.1em 1em rgba(0, 0, 0, 0.4);
+	border-radius: 5px;
+`;
+
 export const LabelWrapper = styled.div`
 	width: 80%;
 	margin-bottom: 0.2rem;
