@@ -29,12 +29,6 @@ export default function Map() {
 
 	const mapRef = useRef();
 
-	let center = {
-		// Houston
-		lat: 29.749907,
-		lng: -95.358421,
-	};
-
 	const options = {
 		disableDefaultUI: true,
 		zoomControl: true,
@@ -69,6 +63,21 @@ export default function Map() {
 		});
 	};
 
+	//* Allows for map scrolling and causes re-render once finished
+	//* Initial center
+	const [position, setPosition] = useState({
+		lat: 29.749907,
+		lng: -95.358421,
+	});
+
+	//* Reset center point
+	function handleCenter() {
+		if (!mapRef.current) return;
+
+		const newPos = mapRef.current.getCenter().toJSON();
+		setPosition(newPos);
+	}
+
 	const { isLoaded, loadError } = useLoadScript({
 		googleMapsApiKey:
 			process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -83,11 +92,12 @@ export default function Map() {
 			<GoogleMap
 				mapContainerStyle={mapContainerStyle}
 				zoom={13}
-				center={center ?? Locate}
+				center={position}
 				options={options}
 				onLoad={onMapMounted}
 				onTilesLoaded={fetchPlaces}
 				onBoundsChanged={fetchPlaces}
+				onDragEnd={handleCenter}
 			>
 				<Title>
 					Bars Near You{' '}
@@ -128,8 +138,12 @@ export default function Map() {
 					>
 						<div>
 							<img
-								src={selected.photos[0].getUrl()}
-								alt=''
+								src={
+									selected.photos
+										? selected.photos[0].getUrl()
+										: null
+								}
+								alt='Photo Unavailable'
 								height='100'
 								width='200'
 							/>

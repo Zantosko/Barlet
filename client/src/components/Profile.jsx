@@ -297,7 +297,7 @@ export default function Profile({ match }) {
 									posts.map((post, idx) => {
 										return (
 											<Post
-												key={idx}
+												key={post.id}
 												postInfo={post}
 											></Post>
 										);
