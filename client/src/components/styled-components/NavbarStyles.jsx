@@ -10,6 +10,8 @@ export const Nav = styled.header`
 	justify-content: space-between;
 	align-items: center;
 	padding: 1.5rem;
+	/* position: fixed;
+	z-index: 50; */
 `;
 
 export const LogoImg = styled.img`
@@ -48,9 +50,11 @@ export const NavLink = styled.li`
 	font-size: 15.5px;
 	color: #333;
 	padding: 0.5rem 0.5rem;
+	transition: all 0.3s ease;
 
 	&:hover {
 		cursor: pointer;
+		color: #08aeef;
 	}
 `;
 

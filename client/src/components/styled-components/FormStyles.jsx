@@ -63,7 +63,10 @@ export const FormButton = styled.button`
 	margin-top: 2rem;
 	padding: 0.7rem 3rem;
 	border-radius: 4px;
-	border: solid 1px #08efbd;
+	border: ${(props) =>
+		props.error
+			? 'solid 1px #08aeef'
+			: 'solid 1px #08efbd'};
 	background-color: inherit;
 	color: #333;
 	font-size: 15px;
@@ -73,7 +76,8 @@ export const FormButton = styled.button`
 	&:hover {
 		cursor: pointer;
 		color: #fff;
-		background-color: #08efbd;
+		background-color: ${(props) =>
+			props.error ? '#08aeef' : '#08efbd'};
 	}
 `;
 

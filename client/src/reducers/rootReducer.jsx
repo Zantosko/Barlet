@@ -12,6 +12,7 @@ import postText from './posts/postTextReducer';
 import rank from './posts/rankReducer';
 import posts from './posts/getPostsReducer';
 import showMenu from './showMenuReducer';
+import getPosts from './getAllPostsReducer';
 
 const rootReducer = combineReducers({
 	firstName,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
 	rank,
 	posts,
 	showMenu,
+	getPosts,
 });
 
 export default rootReducer;

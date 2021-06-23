@@ -24,8 +24,11 @@ app.use('/', require('./routes/index'));
 //? Authorization Routes
 app.use('/auth', require('./routes/jwtAuth'));
 
-//? File Upload Routes
+//? User Routes
 app.use('/user', require('./routes/user'));
+
+//? Livefeed Routes
+app.use('/livefeed', require('./routes/livefeed'));
 
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);

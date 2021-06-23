@@ -39,15 +39,6 @@ router.put(
 	}
 );
 
-router.get('/profile-pic', async (req, res) => {
-	const { id } = req.session.user;
-	const user = await User.findByPk(id);
-	const photo = user.profilePic;
-	res.status(200).json({
-		photo,
-	});
-});
-
 router.put('/update-bio', async (req, res) => {
 	try {
 		const { bio, userId } = req.body;
@@ -99,7 +90,24 @@ router.get('/post', authorization, async (req, res) => {
 		res.json(post);
 	} catch (err) {
 		console.error(err.message);
-		res.status(500).send('Server error');
+		res.status(500).json('Server error');
+	}
+});
+
+router.delete('/post', async (req, res) => {
+	try {
+		const { id } = req.body;
+
+		await Post.destroy({
+			where: {
+				id,
+			},
+		});
+
+		res.status(200).json('Post deleted');
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json('Server error');
 	}
 });
 

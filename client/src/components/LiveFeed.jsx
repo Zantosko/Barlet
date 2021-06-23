@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import Navbar2 from './Navbar2';
+import Map from './Map';
+import LiveFeedContent from './LiveFeedContent';
 import { FeedContainer } from './styled-components/LiveFeedStyles';
 
 import { useSelector, useDispatch } from 'react-redux';
 
 import { setUserInfo } from '../actions/userInfo-action';
-import Map from './Map';
 
 export default function LiveFeed() {
 	const dispatch = useDispatch();
@@ -26,6 +27,7 @@ export default function LiveFeed() {
 				}
 			>
 				<Map />
+				<LiveFeedContent />
 			</FeedContainer>
 		</>
 	);

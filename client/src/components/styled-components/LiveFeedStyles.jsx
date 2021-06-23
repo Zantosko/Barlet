@@ -22,4 +22,18 @@ export const FeedContainer = styled.div`
 	align-items: center;
 	position: relative;
 	z-index: 0;
+	width: 100%;
+`;
+
+export const PostContainer = styled.div`
+	height: 1000px;
+	width: 400px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	overflow-y: scroll;
+
+	@media (min-width: 800px) {
+		width: 800px;
+	}
 `;

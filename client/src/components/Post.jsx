@@ -9,9 +9,11 @@ import {
 import { ModalInput } from './styled-components/ProfileStyles';
 import { Modal } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
+import { toast } from 'react-toastify';
 
-import { useSelector } from 'react-redux';
-import userInfo from '../reducers/userInfoReducer';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { setPosts } from '../actions/posts/getPosts-actions';
 
 export default function Post({ postInfo }) {
 	const checkRank = (rank) => {
@@ -31,6 +33,8 @@ export default function Post({ postInfo }) {
 		}
 	};
 
+	const dispatch = useDispatch();
+
 	const profileInfo = useSelector(
 		(state) => state.profileInfo
 	);
@@ -40,12 +44,40 @@ export default function Post({ postInfo }) {
 	const [isModalVisible, setIsModalVisible] =
 		useState(false);
 
-	const showModal = (post) => {
-		console.log(post);
+	const deletePost = async (post) => {
+		try {
+			const { id } = post;
+			const body = {
+				id: id,
+			};
+			const response = await fetch(
+				'http://localhost:4001/user/post',
+				{
+					method: 'DELETE',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(body),
+				}
+			);
+
+			const parseResponse = await response.json();
+
+			if (response.status === 200) {
+				toast.info(parseResponse);
+				setPosts(dispatch);
+			} else {
+				toast.error(parseResponse);
+			}
+		} catch (err) {
+			console.error(err.message);
+		}
+	};
+
+	const showModal = () => {
 		setIsModalVisible(true);
 	};
 
-	const handleOk = () => {
+	const handleOk = (post) => {
+		deletePost(post);
 		setIsModalVisible(false);
 	};
 
@@ -70,13 +102,11 @@ export default function Post({ postInfo }) {
 					<h3>Crowd: {checkRank(postInfo.rank)}</h3>
 				</ContentContainer>
 				<Special>
-					<DeleteOutlined
-						onClick={() => showModal(postInfo)}
-					/>
+					<DeleteOutlined onClick={showModal} />
 					<Modal
 						title='Delete Post'
 						visible={isModalVisible}
-						onOk={handleOk}
+						onOk={() => handleOk(postInfo)}
 						okText='Delete'
 						onCancel={handleCancel}
 					>
