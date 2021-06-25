@@ -1,8 +1,14 @@
 const router = require('express').Router();
-const { User, Profile, Post } = require('../models');
+const {
+	User,
+	Profile,
+	Post,
+	sequelize,
+} = require('../models');
 const authorization = require('../middleware/authorization');
 const path = require('path');
 const multer = require('multer');
+const moment = require('moment');
 
 const multerConfig = multer.diskStorage({
 	destination: (req, file, callback) => {
@@ -110,5 +116,48 @@ router.delete('/post', async (req, res) => {
 		res.status(500).json('Server error');
 	}
 });
+
+/*
+ * List posts
+ */
+// router.get('/post', authorization, async (req, res) => {
+// 	try {
+// 		const pageAsNumber = Number.parseInt(req.query.page);
+// 		const sizeAsNumber = Number.parseInt(req.query.size);
+
+// 		let page = 0;
+// 		if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
+// 			page = pageAsNumber;
+// 		}
+
+// 		let size = 3;
+// 		if (
+// 			!Number.isNaN(sizeAsNumber) &&
+// 			sizeAsNumber > 0 &&
+// 			sizeAsNumber < 5
+// 		) {
+// 			size = sizeAsNumber;
+// 		}
+
+// 		const posts = await Post.findAndCountAll({
+// 			where: {
+// 				userId: req.user,
+// 			},
+// 			limit: size,
+// 			offset: page * size,
+// 		});
+
+// 		res.json({
+// 			content: posts.rows,
+// 			totalPages: Math.ceil(posts.count / size),
+// 		});
+// 	} catch (error) {
+// 		console.log('Failed to fetch posts', error);
+// 		return res.status(500).send({
+// 			success: false,
+// 			message: 'Failed to fetch posts',
+// 		});
+// 	}
+// });
 
 module.exports = router;

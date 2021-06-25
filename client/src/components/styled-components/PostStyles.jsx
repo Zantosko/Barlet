@@ -18,16 +18,16 @@ export const Container = styled.div`
 
 export const ImageContainer = styled.div`
 	width: 60px;
-	height: 60px;
+	height: 100px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-bottom: 1rem;
+	margin-top: 1rem;
 `;
 
 export const PostImage = styled.img`
-	width: 100%;
-	height: 100%;
+	width: 60px;
+	height: 100px;
 	border-radius: 50%;
 	margin-bottom: 5px;
 `;

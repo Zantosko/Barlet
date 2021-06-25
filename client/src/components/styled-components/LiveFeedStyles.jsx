@@ -31,9 +31,13 @@ export const PostContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	overflow-y: scroll;
 
 	@media (min-width: 800px) {
 		width: 800px;
 	}
+`;
+
+export const Title2 = styled.div`
+	font-size: 35px;
+	margin: 1.5rem;
 `;

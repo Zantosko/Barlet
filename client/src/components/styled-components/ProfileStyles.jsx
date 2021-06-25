@@ -39,7 +39,7 @@ export const File = styled.input`
 `;
 
 export const ImageContainer = styled.div`
-	height: 200px;
+	height: 220px;
 	width: 200px;
 	display: flex;
 	flex-direction: column;
@@ -87,11 +87,12 @@ export const Special2 = styled.span`
 `;
 
 export const PostsContainer = styled.div`
-	height: 1000vh;
+	height: 100vh;
 	width: 400px;
 	padding: 1rem;
 	display: flex;
 	flex-direction: column;
+	overflow-y: visible;
 
 	@media (min-width: 800px) {
 		width: 700px;
@@ -152,11 +153,10 @@ export const PostButton = styled.button`
 `;
 
 export const PostContainer2 = styled.div`
-	height: 1000px;
+	height: 1000vh;
 	width: 400px;
 	display: flex;
 	flex-direction: column;
-	overflow-y: scroll;
 
 	@media (min-width: 800px) {
 		width: 800px;
