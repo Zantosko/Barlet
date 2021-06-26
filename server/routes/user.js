@@ -24,6 +24,7 @@ const upload = multer({
 	storage: multerConfig,
 });
 
+//* Profile Card Routes
 router.put(
 	'/profile-pic',
 	authorization,
@@ -62,6 +63,7 @@ router.put('/update-bio', async (req, res) => {
 	}
 });
 
+//* Post Routes
 router.post('/post', async (req, res) => {
 	try {
 		const { postText, rank, userId } = req.body;
@@ -85,20 +87,20 @@ router.post('/post', async (req, res) => {
 	}
 });
 
-router.get('/post', authorization, async (req, res) => {
-	try {
-		const post = await Post.findAll({
-			where: {
-				userId: req.user,
-			},
-		});
+// router.get('/post', authorization, async (req, res) => {
+// 	try {
+// 		const post = await Post.findAll({
+// 			where: {
+// 				userId: req.user,
+// 			},
+// 		});
 
-		res.json(post);
-	} catch (err) {
-		console.error(err.message);
-		res.status(500).json('Server error');
-	}
-});
+// 		res.json(post);
+// 	} catch (err) {
+// 		console.error(err.message);
+// 		res.status(500).json('Server error');
+// 	}
+// });
 
 router.delete('/post', async (req, res) => {
 	try {
@@ -120,44 +122,69 @@ router.delete('/post', async (req, res) => {
 /*
  * List posts
  */
-// router.get('/post', authorization, async (req, res) => {
-// 	try {
-// 		const pageAsNumber = Number.parseInt(req.query.page);
-// 		const sizeAsNumber = Number.parseInt(req.query.size);
+router.get('/post', authorization, async (req, res) => {
+	try {
+		const pageAsNumber = Number.parseInt(req.query.page);
+		const sizeAsNumber = Number.parseInt(req.query.size);
 
-// 		let page = 0;
-// 		if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
-// 			page = pageAsNumber;
-// 		}
+		let page = 0;
+		if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
+			page = pageAsNumber;
+		}
 
-// 		let size = 3;
-// 		if (
-// 			!Number.isNaN(sizeAsNumber) &&
-// 			sizeAsNumber > 0 &&
-// 			sizeAsNumber < 5
-// 		) {
-// 			size = sizeAsNumber;
-// 		}
+		let size = 3;
+		if (
+			!Number.isNaN(sizeAsNumber) &&
+			sizeAsNumber > 0 &&
+			sizeAsNumber < 5
+		) {
+			size = sizeAsNumber;
+		}
 
-// 		const posts = await Post.findAndCountAll({
-// 			where: {
-// 				userId: req.user,
-// 			},
-// 			limit: size,
-// 			offset: page * size,
-// 		});
+		const posts = await Post.findAndCountAll({
+			where: {
+				userId: req.user,
+			},
+			limit: size,
+			offset: page * size,
+		});
 
-// 		res.json({
-// 			content: posts.rows,
-// 			totalPages: Math.ceil(posts.count / size),
-// 		});
-// 	} catch (error) {
-// 		console.log('Failed to fetch posts', error);
-// 		return res.status(500).send({
-// 			success: false,
-// 			message: 'Failed to fetch posts',
-// 		});
-// 	}
-// });
+		res.json({
+			content: posts.rows,
+			totalPages: Math.ceil(posts.count / size),
+		});
+	} catch (error) {
+		console.log('Failed to fetch posts', error);
+		return res.status(500).send({
+			success: false,
+			message: 'Failed to fetch posts',
+		});
+	}
+});
+
+//* Review Routes
+router.post('/review', async (req, res) => {
+	try {
+		const { title, reviewText, rating, userId } = req.body;
+
+		if (![title, postText, rank].every(Boolean)) {
+			return res
+				.status(401)
+				.json('Please Fill out all fields');
+		}
+
+		const newReview = Post.create({
+			title,
+			reviewText,
+			rating,
+			userId,
+		});
+
+		res.status(200).json('Review submitted');
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json('Server error');
+	}
+});
 
 module.exports = router;
