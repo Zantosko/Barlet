@@ -39,11 +39,16 @@ export const File = styled.input`
 `;
 
 export const ImageContainer = styled.div`
-	height: 220px;
-	width: 200px;
+	height: 200px;
+	width: 180px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+
+	@media (min-width: 800px) {
+		width: 200px;
+		height: 220px;
+	}
 `;
 
 export const ProfileImage = styled.img`
@@ -100,7 +105,7 @@ export const PostsContainer = styled.div`
 `;
 
 export const InputContainer = styled.form`
-	height: 300px;
+	height: ${(props) => (props.review ? '500px' : '300px')};
 	background-color: #fff;
 	opacity: 0.9;
 	border-radius: 4px;
@@ -118,27 +123,48 @@ export const InputContainer = styled.form`
 export const PostInput = styled.input`
 	height: 40px;
 	width: 80%;
-	border: 1px solid #08aeef;
+	border: ${(props) =>
+		props.review
+			? '1px solid #08efbd'
+			: '1px solid #08aeef'};
 	border-radius: 4px;
 	padding: 1rem;
-	margin: 1rem;
+	margin: 0 0 1.3rem 0;
 
 	&:focus {
-		outline-color: #08efbd;
+		outline-color: ${(props) =>
+			props.review ? '#08aeef' : '#08efbd'};
 	}
 `;
 
 export const RadioContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	width: 80%;
+	width: 90%;
 	padding: 1rem;
+`;
+
+export const Alignment = styled.div`
+	width: 75%;
+`;
+
+export const ReviewText = styled.textarea`
+	width: 80%;
+	height: 100px;
+	border: 1px solid #08efbd;
+	border-radius: 4px;
+	margin: 0 0 1rem 0;
+	padding: 0.5rem 1rem;
+
+	&:focus {
+		outline-color: #08aeef;
+	}
 `;
 
 export const PostButton = styled.button`
 	background-color: inherit;
-	border: #08efbd solid 1px;
+	border: ${(props) =>
+		props.review
+			? '1px solid #08aeef'
+			: '1px solid #08efbd'};
 	border-radius: 4px;
 	margin-top: 1rem;
 	padding: 0.3rem 2rem;
@@ -146,14 +172,14 @@ export const PostButton = styled.button`
 	transition: all 0.3s ease;
 
 	&:hover {
-		background-color: #08efbd;
+		background-color: ${(props) =>
+			props.review ? ' #08aeef' : '#08efbd'};
 		color: #fff;
 		cursor: pointer;
 	}
 `;
 
 export const PostContainer2 = styled.div`
-	height: 1000vh;
 	width: 400px;
 	display: flex;
 	flex-direction: column;

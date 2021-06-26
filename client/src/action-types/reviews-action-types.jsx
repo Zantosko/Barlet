@@ -1,0 +1,3 @@
+export const CHANGE_TITLE = 'CHANGE_TITLE';
+export const CHANGE_REVIEW_TEXT = 'CHANGE_REVIEW_TEXT';
+export const CHANGE_RATING = 'CHANGE_RATING';

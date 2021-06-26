@@ -13,6 +13,10 @@ import rank from './posts/rankReducer';
 import posts from './posts/getPostsReducer';
 import showMenu from './showMenuReducer';
 import getPosts from './getAllPostsReducer';
+import totalPages from './posts/getPageNumberReducer';
+import rating from './reviews/ratingReducer';
+import reviewText from './reviews/reviewTextReducer';
+import title from './reviews/titleReducer';
 
 const rootReducer = combineReducers({
 	firstName,
@@ -29,6 +33,10 @@ const rootReducer = combineReducers({
 	posts,
 	showMenu,
 	getPosts,
+	totalPages,
+	rating,
+	reviewText,
+	title,
 });
 
 export default rootReducer;

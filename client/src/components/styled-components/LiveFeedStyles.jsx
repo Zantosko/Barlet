@@ -7,6 +7,10 @@ export const Title = styled.h1`
 	z-index: 10;
 	background-color: #fff;
 	padding: 0.3rem;
+
+	@media (max-width: 500px) {
+		display: none;
+	}
 `;
 
 export const CompassIcon = styled.img`

@@ -4,6 +4,7 @@ import {
 	ImageContainer,
 	PostImage,
 	ContentContainer,
+	ContentBox,
 } from './styled-components/PostStyles';
 import { toast } from 'react-toastify';
 
@@ -78,10 +79,12 @@ export default function GlobalPost({ postInfo }) {
 					/>
 					<p>@{postData.username}</p>
 				</ImageContainer>
-				<ContentContainer>
-					<h3>{postInfo.postText}</h3>
-					<h3>Crowd: {checkRank(postInfo.rank)}</h3>
-				</ContentContainer>
+				<ContentBox>
+					<ContentContainer>
+						<h3>{postInfo.postText}</h3>
+						<h3>Crowd: {checkRank(postInfo.rank)}</h3>
+					</ContentContainer>
+				</ContentBox>
 			</Container>
 		</>
 	);

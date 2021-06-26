@@ -8,6 +8,8 @@ import React, {
 } from 'react';
 import Navbar2 from './Navbar2';
 import Post from './Post';
+
+// Styled components
 import {
 	ProfileContainer,
 	ProfileCard,
@@ -27,8 +29,19 @@ import {
 	ImageContainer,
 	ProfileImage,
 	Caption,
+	ReviewText,
+	Alignment,
 } from './styled-components/ProfileStyles';
-import { Avatar, Radio, Spin, Space, Modal } from 'antd';
+
+// Antd design library
+import {
+	Avatar,
+	Radio,
+	Spin,
+	Space,
+	Modal,
+	Rate,
+} from 'antd';
 import {
 	UserOutlined,
 	EditOutlined,
@@ -36,6 +49,7 @@ import {
 import { Tabs } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
+// React Toastify
 import { toast } from 'react-toastify';
 
 // Redux Hooks
@@ -46,6 +60,9 @@ import { setProfileInfo } from '../actions/profileInfo-actions';
 import { setPostText } from '../actions/posts/postText-actions';
 import { setRank } from '../actions/posts/rank-actions';
 import { setPosts } from '../actions/posts/getPosts-actions';
+import { setRating } from '../actions/reviews/rating-actions';
+import { setReviewText } from '../actions/reviews/reviewText-actions';
+import { setTitle } from '../actions/reviews/title-actions';
 
 const { TabPane } = Tabs;
 
@@ -59,6 +76,14 @@ export default function Profile({ match }) {
 	const rank = useSelector((state) => state.rank);
 	const posts = useSelector((state) => state.posts);
 	const showMenu = useSelector((state) => state.showMenu);
+	const totalPages = useSelector(
+		(state) => state.totalPages
+	);
+	const rating = useSelector((state) => state.rating);
+	const title = useSelector((state) => state.title);
+	const reviewText = useSelector(
+		(state) => state.reviewText
+	);
 
 	useEffect(() => {
 		setProfileInfo(dispatch);
@@ -168,6 +193,44 @@ export default function Profile({ match }) {
 		}
 	};
 
+	const onSubmitReview = async (e) => {
+		e.preventDefault();
+
+		try {
+			const { id } = match.params;
+			const convertIdToNumber = Number(id);
+			const body = {
+				title,
+				reviewText,
+				rating,
+				userId: convertIdToNumber,
+			};
+
+			const response = await fetch(
+				'http://localhost:4001/user/post',
+				{
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(body),
+				}
+			);
+
+			const parseResponse = await response.json();
+
+			if (response.status === 200) {
+				toast.info(parseResponse);
+				setTitle(dispatch, '');
+				setReviewText(dispatch, '');
+				setRating(dispatch, 3);
+				window.location.reload();
+			} else {
+				toast.error(parseResponse);
+			}
+		} catch (err) {
+			console.error(err.message);
+		}
+	};
+
 	const [isModalVisible, setIsModalVisible] =
 		useState(false);
 
@@ -186,6 +249,21 @@ export default function Profile({ match }) {
 		setIsModalVisible(false);
 	};
 
+	let page = 0;
+
+	const fetchMorePosts = () => {
+		setPosts(dispatch, page);
+		page++;
+	};
+
+	const desc = [
+		'terrible',
+		'bad',
+		'normal',
+		'good',
+		'wonderful',
+	];
+
 	return (
 		<>
 			<Navbar2 />
@@ -198,6 +276,11 @@ export default function Profile({ match }) {
 									<Avatar
 										size={180}
 										icon={<UserOutlined />}
+										style={
+											showMenu === true
+												? { zIndex: '-1' }
+												: { zIndex: '0' }
+										}
 									/>
 									<Caption>(Change profile photo)</Caption>
 								</ImageContainer>
@@ -286,6 +369,7 @@ export default function Profile({ match }) {
 								<h3>Whats the crowd like?</h3>
 								<RadioContainer>
 									<Radio.Group
+										className='radio'
 										onChange={(e) =>
 											setRank(dispatch, e.target.value)
 										}
@@ -305,9 +389,14 @@ export default function Profile({ match }) {
 							</InputContainer>
 							<PostContainer2>
 								<InfiniteScroll
+									// totalPages = posts.length / 2 ? false, : true
 									dataLength={posts.length}
-									// next={setPosts(dispatch)}
-									hasMore={true}
+									next={fetchMorePosts}
+									hasMore={
+										totalPages === posts.length / 2
+											? false
+											: true
+									}
 									loader={
 										<Space
 											size='middle'
@@ -316,13 +405,14 @@ export default function Profile({ match }) {
 											<Spin size='large'></Spin>
 										</Space>
 									}
-									scrollThreshold='200px'
+									height={300}
+									scrollThreshold='100px'
 								>
 									{posts != null ? (
 										posts.map((post, idx) => {
 											return (
 												<Post
-													key={post.id}
+													key={idx}
 													postInfo={post}
 												></Post>
 											);
@@ -339,7 +429,98 @@ export default function Profile({ match }) {
 							</PostContainer2>
 						</TabPane>
 						<TabPane tab='Reviews' key='2'>
-							Content of Tab Pane 2
+							<InputContainer
+								review
+								onSubmit={onSubmitReview}
+								style={
+									showMenu === true
+										? { zIndex: '-1' }
+										: { zIndex: '0' }
+								}
+							>
+								<Alignment>
+									<h3>Title</h3>
+								</Alignment>
+								<PostInput
+									review
+									type='text'
+									name='title'
+									placeholder='Headline for your review'
+									value={title}
+									onChange={(e) =>
+										setTitle(dispatch, e.target.value)
+									}
+								/>
+								<Alignment>
+									<h3>Review</h3>
+								</Alignment>
+								<ReviewText
+									name='reviewText'
+									placeholder='Give feedback about the bar you are at'
+									value={reviewText}
+									onChange={(e) =>
+										setReviewText(dispatch, e.target.value)
+									}
+								/>
+								<h3>How would you rate the experience?</h3>
+								<Rate
+									name='rating'
+									tooltips={desc}
+									value={rating}
+									onChange={(e) => setRating(dispatch, e)}
+									style={{ fontSize: '30px' }}
+								/>
+								{rating ? (
+									<span className='ant-rate-text'>
+										{desc[rating - 1]}
+									</span>
+								) : (
+									''
+								)}
+								<PostButton review type='submit'>
+									Send
+								</PostButton>
+							</InputContainer>
+							<PostContainer2>
+								{/* <InfiniteScroll
+									// totalPages = posts.length / 2 ? false, : true
+									dataLength={posts.length}
+									next={fetchMorePosts}
+									hasMore={
+										totalPages === posts.length / 2
+											? false
+											: true
+									}
+									loader={
+										<Space
+											size='middle'
+											className='spinner'
+										>
+											<Spin size='large'></Spin>
+										</Space>
+									}
+									height={300}
+									scrollThreshold='100px'
+								>
+									{posts != null ? (
+										posts.map((post, idx) => {
+											return (
+												<Post
+													key={idx}
+													postInfo={post}
+												></Post>
+											);
+										})
+									) : (
+										<Space
+											size='middle'
+											className='spinner'
+										>
+											<Spin size='large'></Spin>
+										</Space>
+									)}
+								</InfiniteScroll> */}
+							</PostContainer2>
 						</TabPane>
 					</Tabs>
 				</PostsContainer>

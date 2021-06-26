@@ -47,6 +47,10 @@ export const GridRight = styled.div`
 	opacity: 0.8;
 	padding: 2rem;
 	max-height: 500px;
+
+	@media (max-width: 600px) {
+		height: 300px;
+	}
 `;
 
 export const WelcomeText = styled.h1`
