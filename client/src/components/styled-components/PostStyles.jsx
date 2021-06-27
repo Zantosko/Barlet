@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
 	margin-top: 1rem;
-	padding: 0 2rem;
+	padding: 1rem 2rem;
 	background-color: ${(props) =>
 		props.review ? '#91f4de' : '#92e0ff'};
-	height: ${(props) => (props.review ? '220px' : '120px')};
+	height: ${(props) => (props.review ? '250px' : '120px')};
 	width: 365px;
 	border-radius: 10px;
 	display: flex;
@@ -43,16 +43,9 @@ export const UserName = styled.p``;
 export const ContentContainer = styled.div`
 	width: 60%;
 	height: ${(props) => (props.review ? '150px' : '80px')};
-	/* margin-bottom: ${(props) =>
-		props.review ? '2rem' : '0'}; */
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
-
-	@media (max-width: 600px) {
-		/* margin-bottom: ${(props) =>
-			props.review ? '2rem' : '0'}; */
-	}
 `;
 
 export const Special = styled.span`
@@ -66,4 +59,5 @@ export const Special = styled.span`
 
 export const ReviewTitle = styled.h2`
 	font-weight: bolder;
+	text-decoration: underline;
 `;

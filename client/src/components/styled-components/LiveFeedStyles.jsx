@@ -30,11 +30,12 @@ export const FeedContainer = styled.div`
 `;
 
 export const PostContainer = styled.div`
-	height: 1000px;
+	height: 500px;
 	width: 400px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	overflow-y: scroll;
 
 	@media (min-width: 800px) {
 		width: 800px;

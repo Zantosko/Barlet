@@ -10,7 +10,10 @@ import { toast } from 'react-toastify';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-export default function GlobalPost({ postInfo }) {
+export default function GlobalPost({
+	postInfo,
+	reference,
+}) {
 	const checkRank = (rank) => {
 		switch (rank) {
 			case 1:
@@ -25,6 +28,23 @@ export default function GlobalPost({ postInfo }) {
 				return '👴';
 			default:
 				return '🔥';
+		}
+	};
+
+	const checkRating = (rating) => {
+		switch (rating) {
+			case 1:
+				return '⭐️';
+			case 2:
+				return '⭐️⭐️';
+			case 3:
+				return '⭐️⭐️⭐️';
+			case 4:
+				return '⭐️⭐️⭐️⭐️';
+			case 5:
+				return '⭐️⭐️⭐️⭐️⭐️';
+			default:
+				return '⭐️⭐️⭐️';
 		}
 	};
 
@@ -69,7 +89,10 @@ export default function GlobalPost({ postInfo }) {
 
 	return (
 		<>
-			<Container>
+			<Container
+				ref={reference}
+				review={postInfo.title ? true : false}
+			>
 				<ImageContainer>
 					<PostImage
 						src={
@@ -81,8 +104,18 @@ export default function GlobalPost({ postInfo }) {
 				</ImageContainer>
 				<ContentBox>
 					<ContentContainer>
-						<h3>{postInfo.postText}</h3>
-						<h3>Crowd: {checkRank(postInfo.rank)}</h3>
+						<h2>{postInfo.title}</h2>
+						<h3>
+							{postInfo.postText
+								? postInfo.postText
+								: postInfo.reviewText}
+						</h3>
+						<h3>
+							{postInfo.rank ? 'Crowd: ' : 'Rating: '}
+							{postInfo.rank
+								? checkRank(postInfo.rank)
+								: checkRating(postInfo.rating)}
+						</h3>
 					</ContentContainer>
 				</ContentBox>
 			</Container>
