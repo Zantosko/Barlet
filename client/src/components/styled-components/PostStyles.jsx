@@ -2,10 +2,11 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
 	margin-top: 1rem;
-	padding: 1rem 2rem;
+	padding: ${(props) =>
+		props.review ? '5rem 2rem' : '1rem 2rem'};
 	background-color: ${(props) =>
 		props.review ? '#91f4de' : '#92e0ff'};
-	height: ${(props) => (props.review ? '250px' : '120px')};
+	height: ${(props) => (props.review ? '280px' : '120px')};
 	width: 365px;
 	border-radius: 10px;
 	display: flex;
@@ -14,6 +15,12 @@ export const Container = styled.div`
 
 	@media (min-width: 800px) {
 		width: 665px;
+		padding: ${(props) =>
+			props.review ? '2rem' : '1rem 2rem'};
+	}
+
+	@media (min-width: 1200px) {
+		width: 865px;
 	}
 `;
 
@@ -60,4 +67,8 @@ export const Special = styled.span`
 export const ReviewTitle = styled.h2`
 	font-weight: bolder;
 	text-decoration: underline;
+
+	@media (max-width: 800px) {
+		font-size: 18px;
+	}
 `;

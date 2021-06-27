@@ -88,21 +88,6 @@ router.post('/post', async (req, res) => {
 	}
 });
 
-// router.get('/post', authorization, async (req, res) => {
-// 	try {
-// 		const post = await Post.findAll({
-// 			where: {
-// 				userId: req.user,
-// 			},
-// 		});
-
-// 		res.json(post);
-// 	} catch (err) {
-// 		console.error(err.message);
-// 		res.status(500).json('Server error');
-// 	}
-// });
-
 router.delete('/post', async (req, res) => {
 	try {
 		const { id } = req.body;
@@ -148,6 +133,7 @@ router.get('/post', authorization, async (req, res) => {
 			},
 			limit: size,
 			offset: page * size,
+			order: [['createdAt', 'DESC']],
 		});
 
 		res.json({
@@ -213,6 +199,7 @@ router.get('/review', authorization, async (req, res) => {
 			},
 			limit: size,
 			offset: page * size,
+			order: [['createdAt', 'DESC']],
 		});
 
 		res.json({
@@ -244,20 +231,5 @@ router.delete('/review', async (req, res) => {
 		res.status(500).json('Server error');
 	}
 });
-
-// router.get('/review', authorization, async (req, res) => {
-// 	try {
-// 		const review = await Review.findAll({
-// 			where: {
-// 				userId: req.user,
-// 			},
-// 		});
-
-// 		res.json(review);
-// 	} catch (err) {
-// 		console.error(err.message);
-// 		res.status(500).json('Server error');
-// 	}
-// });
 
 module.exports = router;

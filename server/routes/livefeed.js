@@ -1,25 +1,10 @@
 const router = require('express').Router();
-const authorization = require('../middleware/authorization');
 const {
 	Post,
 	Review,
 	User,
 	Profile,
 } = require('../models');
-
-// router.get('/posts', async (req, res) => {
-// 	try {
-// 		const [posts, reviews] = await Promise.all([
-// 			Post.findAll(),
-// 			Review.findAll(),
-// 		]);
-
-// 		res.status(200).json([posts, reviews]);
-// 	} catch (err) {
-// 		console.error(err.message);
-// 		res.status(500).json('Server error');
-// 	}
-// });
 
 router.get('/posts', async (req, res) => {
 	try {

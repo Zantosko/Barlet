@@ -24,6 +24,10 @@ export const ProfileCard = styled.div`
 		width: 700px;
 		height: 400px;
 	}
+
+	@media (min-width: 1200px) {
+		width: 900px;
+	}
 `;
 
 export const FileForm = styled.form``;
@@ -101,6 +105,10 @@ export const PostsContainer = styled.div`
 
 	@media (min-width: 800px) {
 		width: 700px;
+	}
+
+	@media (min-width: 1200px) {
+		width: 900px;
 	}
 `;
 
@@ -189,6 +197,10 @@ export const PostContainer2 = styled.div`
 	@media (min-width: 800px) {
 		width: 800px;
 	}
+
+	@media (min-width: 1200px) {
+		width: 900px;
+	}
 `;
 
 export const PostContainer3 = styled.div`
@@ -200,6 +212,10 @@ export const PostContainer3 = styled.div`
 
 	@media (min-width: 800px) {
 		width: 800px;
+	}
+
+	@media (min-width: 1200px) {
+		width: 900px;
 	}
 `;
 

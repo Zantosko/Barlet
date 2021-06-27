@@ -40,6 +40,10 @@ export const PostContainer = styled.div`
 	@media (min-width: 800px) {
 		width: 800px;
 	}
+
+	@media (min-width: 1200px) {
+		width: 900px;
+	}
 `;
 
 export const Title2 = styled.div`

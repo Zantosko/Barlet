@@ -26,7 +26,6 @@ import {
 import { Radio, Spin, Space, Rate } from 'antd';
 
 import { Tabs } from 'antd';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 // React Toastify
 import { toast } from 'react-toastify';

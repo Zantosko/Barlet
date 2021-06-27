@@ -10,15 +10,10 @@ import userInfo from './userInfoReducer';
 import profileInfo from './profileReducer';
 import postText from './posts/postTextReducer';
 import rank from './posts/rankReducer';
-import posts from './posts/getPostsReducer';
 import showMenu from './showMenuReducer';
-import getPosts from './getAllPostsReducer';
-import totalPages from './posts/getPageNumberReducer';
 import rating from './reviews/ratingReducer';
 import reviewText from './reviews/reviewTextReducer';
 import title from './reviews/titleReducer';
-import reviews from './reviews/getReviewsReducer';
-import totalReviewPages from './reviews/getReviewPageNumberReducer';
 
 const rootReducer = combineReducers({
 	firstName,
@@ -32,15 +27,10 @@ const rootReducer = combineReducers({
 	profileInfo,
 	postText,
 	rank,
-	posts,
 	showMenu,
-	getPosts,
-	totalPages,
 	rating,
 	reviewText,
 	title,
-	reviews,
-	totalReviewPages,
 });
 
 export default rootReducer;

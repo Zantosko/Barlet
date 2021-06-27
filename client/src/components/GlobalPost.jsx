@@ -5,6 +5,7 @@ import {
 	PostImage,
 	ContentContainer,
 	ContentBox,
+	ReviewTitle,
 } from './styled-components/PostStyles';
 import { toast } from 'react-toastify';
 
@@ -104,7 +105,7 @@ export default function GlobalPost({
 				</ImageContainer>
 				<ContentBox>
 					<ContentContainer>
-						<h2>{postInfo.title}</h2>
+						<ReviewTitle>{postInfo.title}</ReviewTitle>
 						<h3>
 							{postInfo.postText
 								? postInfo.postText

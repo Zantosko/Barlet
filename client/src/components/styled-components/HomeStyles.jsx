@@ -22,7 +22,7 @@ export const Logo = styled.img`
 export const Grid = styled.div`
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
-	width: 100%;
+	max-width: 90%;
 	height: 500px;
 	padding: 1rem;
 

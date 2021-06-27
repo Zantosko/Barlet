@@ -12,8 +12,6 @@ import { toast } from 'react-toastify';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setPosts } from '../actions/posts/getPosts-actions';
-
 export default function Post({ postInfo, reference }) {
 	const checkRank = (rank) => {
 		switch (rank) {
@@ -62,7 +60,6 @@ export default function Post({ postInfo, reference }) {
 
 			if (response.status === 200) {
 				toast.info(parseResponse);
-				setPosts(dispatch);
 			} else {
 				toast.error(parseResponse);
 			}
