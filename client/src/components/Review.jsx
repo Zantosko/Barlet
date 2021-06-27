@@ -5,6 +5,7 @@ import {
 	PostImage,
 	ContentContainer,
 	Special,
+	ReviewTitle,
 } from './styled-components/PostStyles';
 import { Modal } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
@@ -14,21 +15,21 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { setPosts } from '../actions/posts/getPosts-actions';
 
-export default function Post({ postInfo, reference }) {
-	const checkRank = (rank) => {
-		switch (rank) {
+export default function Review({ reviewInfo, reference }) {
+	const checkRating = (rating) => {
+		switch (rating) {
 			case 1:
-				return '🔥';
+				return '⭐️';
 			case 2:
-				return '🧊';
+				return '⭐️⭐️';
 			case 3:
-				return '💀';
+				return '⭐️⭐️⭐️';
 			case 4:
-				return '😎';
+				return '⭐️⭐️⭐️⭐️';
 			case 5:
-				return '👴';
+				return '⭐️⭐️⭐️⭐️⭐️';
 			default:
-				return '🔥';
+				return '⭐️⭐️⭐️';
 		}
 	};
 
@@ -43,14 +44,14 @@ export default function Post({ postInfo, reference }) {
 	const [isModalVisible, setIsModalVisible] =
 		useState(false);
 
-	const deletePost = async (post) => {
+	const deletePost = async (review) => {
 		try {
-			const { id } = post;
+			const { id } = review;
 			const body = {
 				id: id,
 			};
 			const response = await fetch(
-				'http://localhost:4001/user/post',
+				'http://localhost:4001/user/review',
 				{
 					method: 'DELETE',
 					headers: { 'Content-Type': 'application/json' },
@@ -75,8 +76,8 @@ export default function Post({ postInfo, reference }) {
 		setIsModalVisible(true);
 	};
 
-	const handleOk = (post) => {
-		deletePost(post);
+	const handleOk = (review) => {
+		deletePost(review);
 		setIsModalVisible(false);
 	};
 
@@ -86,7 +87,7 @@ export default function Post({ postInfo, reference }) {
 
 	return (
 		<>
-			<Container ref={reference}>
+			<Container review ref={reference}>
 				<ImageContainer>
 					<PostImage
 						src={
@@ -96,21 +97,22 @@ export default function Post({ postInfo, reference }) {
 					/>
 					<p>@{userInfo.username}</p>
 				</ImageContainer>
-				<ContentContainer>
-					<h3>{postInfo.postText}</h3>
-					<h3>Crowd: {checkRank(postInfo.rank)}</h3>
+				<ContentContainer review>
+					<ReviewTitle>{reviewInfo.title}</ReviewTitle>
+					<h3>{reviewInfo.reviewText}</h3>
+					<h3>Rating: {checkRating(reviewInfo.rating)}</h3>
 				</ContentContainer>
 				<Special>
 					<DeleteOutlined onClick={showModal} />
 					<Modal
-						title='Delete Post'
+						title='Delete Review'
 						visible={isModalVisible}
-						onOk={() => handleOk(postInfo)}
+						onOk={() => handleOk(reviewInfo)}
 						okText='Delete'
 						onCancel={handleCancel}
 					>
 						<h3>
-							Are you sure you want to delete this post?
+							Are you sure you want to delete this review?
 						</h3>
 					</Modal>
 				</Special>

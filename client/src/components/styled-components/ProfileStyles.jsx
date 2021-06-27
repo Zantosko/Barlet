@@ -92,7 +92,7 @@ export const Special2 = styled.span`
 `;
 
 export const PostsContainer = styled.div`
-	height: 100vh;
+	height: 120vh;
 	width: 400px;
 	padding: 1rem;
 	display: flex;
@@ -105,7 +105,7 @@ export const PostsContainer = styled.div`
 `;
 
 export const InputContainer = styled.form`
-	height: ${(props) => (props.review ? '500px' : '300px')};
+	height: ${(props) => (props.review ? '480px' : '300px')};
 	background-color: #fff;
 	opacity: 0.9;
 	border-radius: 4px;
@@ -181,8 +181,22 @@ export const PostButton = styled.button`
 
 export const PostContainer2 = styled.div`
 	width: 400px;
+	height: 400px;
 	display: flex;
 	flex-direction: column;
+	overflow-y: scroll;
+
+	@media (min-width: 800px) {
+		width: 800px;
+	}
+`;
+
+export const PostContainer3 = styled.div`
+	width: 400px;
+	height: 400px;
+	display: flex;
+	flex-direction: column;
+	overflow-y: scroll;
 
 	@media (min-width: 800px) {
 		width: 800px;

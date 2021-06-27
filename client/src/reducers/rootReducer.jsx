@@ -17,6 +17,8 @@ import totalPages from './posts/getPageNumberReducer';
 import rating from './reviews/ratingReducer';
 import reviewText from './reviews/reviewTextReducer';
 import title from './reviews/titleReducer';
+import reviews from './reviews/getReviewsReducer';
+import totalReviewPages from './reviews/getReviewPageNumberReducer';
 
 const rootReducer = combineReducers({
 	firstName,
@@ -37,6 +39,8 @@ const rootReducer = combineReducers({
 	rating,
 	reviewText,
 	title,
+	reviews,
+	totalReviewPages,
 });
 
 export default rootReducer;

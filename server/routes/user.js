@@ -3,6 +3,7 @@ const {
 	User,
 	Profile,
 	Post,
+	Review,
 	sequelize,
 } = require('../models');
 const authorization = require('../middleware/authorization');
@@ -167,13 +168,13 @@ router.post('/review', async (req, res) => {
 	try {
 		const { title, reviewText, rating, userId } = req.body;
 
-		if (![title, postText, rank].every(Boolean)) {
+		if (![title, reviewText, rating].every(Boolean)) {
 			return res
 				.status(401)
 				.json('Please Fill out all fields');
 		}
 
-		const newReview = Post.create({
+		const newReview = Review.create({
 			title,
 			reviewText,
 			rating,
@@ -186,5 +187,77 @@ router.post('/review', async (req, res) => {
 		res.status(500).json('Server error');
 	}
 });
+
+router.get('/review', authorization, async (req, res) => {
+	try {
+		const pageAsNumber = Number.parseInt(req.query.page);
+		const sizeAsNumber = Number.parseInt(req.query.size);
+
+		let page = 0;
+		if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
+			page = pageAsNumber;
+		}
+
+		let size = 3;
+		if (
+			!Number.isNaN(sizeAsNumber) &&
+			sizeAsNumber > 0 &&
+			sizeAsNumber < 5
+		) {
+			size = sizeAsNumber;
+		}
+
+		const reviews = await Review.findAndCountAll({
+			where: {
+				userId: req.user,
+			},
+			limit: size,
+			offset: page * size,
+		});
+
+		res.json({
+			content: reviews.rows,
+			totalPages: Math.ceil(reviews.count / size),
+		});
+	} catch (error) {
+		console.log('Failed to fetch reviews', error);
+		return res.status(500).send({
+			success: false,
+			message: 'Failed to fetch reviews',
+		});
+	}
+});
+
+router.delete('/review', async (req, res) => {
+	try {
+		const { id } = req.body;
+
+		await Review.destroy({
+			where: {
+				id,
+			},
+		});
+
+		res.status(200).json('Review deleted');
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json('Server error');
+	}
+});
+
+// router.get('/review', authorization, async (req, res) => {
+// 	try {
+// 		const review = await Review.findAll({
+// 			where: {
+// 				userId: req.user,
+// 			},
+// 		});
+
+// 		res.json(review);
+// 	} catch (err) {
+// 		console.error(err.message);
+// 		res.status(500).json('Server error');
+// 	}
+// });
 
 module.exports = router;

@@ -1,51 +1,30 @@
 import React, {
 	useState,
 	useEffect,
-	useReducer,
-	createContext,
-	useContext,
+	useCallback,
 	useRef,
 } from 'react';
 import Navbar2 from './Navbar2';
 import Post from './Post';
+import Review from './Review';
 
 // Styled components
 import {
 	ProfileContainer,
-	ProfileCard,
-	FileForm,
-	FileLabel,
-	File,
 	PostsContainer,
-	BioContainer,
-	Special,
-	Special2,
 	InputContainer,
 	PostInput,
 	PostButton,
 	RadioContainer,
 	PostContainer2,
-	ModalInput,
-	ImageContainer,
-	ProfileImage,
-	Caption,
+	PostContainer3,
 	ReviewText,
 	Alignment,
 } from './styled-components/ProfileStyles';
 
 // Antd design library
-import {
-	Avatar,
-	Radio,
-	Spin,
-	Space,
-	Modal,
-	Rate,
-} from 'antd';
-import {
-	UserOutlined,
-	EditOutlined,
-} from '@ant-design/icons';
+import { Radio, Spin, Space, Rate } from 'antd';
+
 import { Tabs } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
@@ -59,98 +38,149 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setProfileInfo } from '../actions/profileInfo-actions';
 import { setPostText } from '../actions/posts/postText-actions';
 import { setRank } from '../actions/posts/rank-actions';
-import { setPosts } from '../actions/posts/getPosts-actions';
 import { setRating } from '../actions/reviews/rating-actions';
 import { setReviewText } from '../actions/reviews/reviewText-actions';
 import { setTitle } from '../actions/reviews/title-actions';
+import ProfileHeader from './ProfileHeader';
 
 const { TabPane } = Tabs;
 
 export default function Profile({ match }) {
 	const dispatch = useDispatch();
-	const profileInfo = useSelector(
-		(state) => state.profileInfo
-	);
-	const userInfo = useSelector((state) => state.userInfo);
 	const postText = useSelector((state) => state.postText);
 	const rank = useSelector((state) => state.rank);
-	const posts = useSelector((state) => state.posts);
 	const showMenu = useSelector((state) => state.showMenu);
-	const totalPages = useSelector(
-		(state) => state.totalPages
-	);
 	const rating = useSelector((state) => state.rating);
 	const title = useSelector((state) => state.title);
 	const reviewText = useSelector(
 		(state) => state.reviewText
 	);
 
+	//* Local state variables
+	//? Post state vars
+	const [items, setItems] = useState([]);
+	const [totalPages, setTotalPages] = useState(0);
+	const [pageNumber, setPageNumber] = useState(0);
+	const [isLoading, setIsLoading] = useState(false);
+	const [hasMore, setHasMore] = useState(true);
+	const observer = useRef();
+
+	//? Review state vars
+	const [reviews, setReviews] = useState([]);
+	const [totalReviewPages, setTotalReviewPages] =
+		useState(0);
+	const [reviewPageNumber, setReviewPageNumber] =
+		useState(0);
+	const [reviewIsLoading, setReviewIsLoading] =
+		useState(false);
+	const [reviewHasMore, setReviewHasMore] = useState(true);
+	const reviewObserver = useRef();
+
 	useEffect(() => {
 		setProfileInfo(dispatch);
-		setPosts(dispatch);
+		getPosts(pageNumber);
+		setPageNumber((pageNumber) => pageNumber + 1);
+		getReviews(reviewPageNumber);
+		setReviewPageNumber(
+			(reviewPageNumber) => reviewPageNumber + 1
+		);
 	}, []);
 
-	//* Upload new profile photo
-	const changeProfilePic = async (e) => {
-		const file = e.target.files[0];
-		const data = new FormData();
-		data.append('file', file);
-		if (file) {
-			if (file.size < 1572864) {
-				if (
-					file.type === 'image/jpeg' ||
-					file.type === 'image/png'
-				) {
-					const response = await fetch(
-						'http://localhost:4001/user/profile-pic',
-						{
-							method: 'PUT',
-							headers: { token: localStorage.token },
-							body: data,
-						}
-					);
-					if (response) {
-						console.log(response);
-						toast.info('Profile Photo Changed');
-						window.location.reload();
-					}
-				} else {
-					toast.error('File type must be jpeg or png');
-				}
-			} else {
-				toast.error('File size is too large');
-			}
-		}
-	};
+	//* Function is called once last post is rendered
+	const lastItemRef = useCallback(
+		(node) => {
+			if (isLoading) return;
+			if (observer.current) observer.current.disconnect();
 
-	//* Change bio
-	const editBio = async (e) => {
+			observer.current = new IntersectionObserver(
+				(entries) => {
+					if (entries[0].isIntersecting && hasMore) {
+						if (pageNumber < totalPages) {
+							getPosts(pageNumber);
+							setPageNumber((pageNumber) => pageNumber + 1);
+						} else {
+							setHasMore(false);
+						}
+					}
+				}
+			);
+
+			if (node) observer.current.observe(node);
+		},
+		[isLoading, hasMore]
+	);
+
+	//* Function is called once last review is rendered
+	const lastReviewRef = useCallback(
+		(node) => {
+			if (reviewIsLoading) return;
+			if (reviewObserver.current)
+				reviewObserver.current.disconnect();
+
+			reviewObserver.current = new IntersectionObserver(
+				(entries) => {
+					if (entries[0].isIntersecting && reviewHasMore) {
+						if (reviewPageNumber < totalReviewPages) {
+							getReviews(reviewPageNumber);
+							setReviewPageNumber(
+								(reviewPageNumber) => reviewPageNumber + 1
+							);
+						} else {
+							setReviewHasMore(false);
+						}
+					}
+				}
+			);
+
+			if (node) reviewObserver.current.observe(node);
+		},
+		[reviewIsLoading, reviewHasMore]
+	);
+
+	//* Grab posts from database
+	const getPosts = async (pageNum) => {
 		try {
-			const { id } = match.params;
-			const convertIdToNumber = Number(id);
-			const body = {
-				bio: modalText,
-				userId: convertIdToNumber,
-			};
+			setIsLoading(true);
+			await new Promise((resolve) =>
+				setTimeout(resolve, 500)
+			);
 
 			const response = await fetch(
-				'http://localhost:4001/user/update-bio',
+				`http://localhost:4001/user/post?page=${pageNum}&size=2`,
 				{
-					method: 'PUT',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(body),
+					method: 'GET',
+					headers: { token: localStorage.token },
 				}
 			);
 
 			const parseResponse = await response.json();
+			setItems([...items, ...parseResponse.content]);
+			setTotalPages(parseResponse.totalPages);
+			setIsLoading(false);
+		} catch (err) {
+			console.error(err.message);
+		}
+	};
 
-			if (response.status === 200) {
-				toast.info(parseResponse);
-				setModalText('');
-				setProfileInfo(dispatch);
-			} else {
-				toast.error(parseResponse);
-			}
+	//* Grab reviews from database
+	const getReviews = async (pageNum) => {
+		try {
+			setReviewIsLoading(true);
+			await new Promise((resolve) =>
+				setTimeout(resolve, 500)
+			);
+			const response = await fetch(
+				`http://localhost:4001/user/review?page=${pageNum}&size=2`,
+				{
+					method: 'GET',
+					headers: { token: localStorage.token },
+				}
+			);
+
+			const parseResponse = await response.json();
+			setReviews([...reviews, ...parseResponse.content]);
+			setTotalReviewPages(parseResponse.totalPages);
+			setReviewIsLoading(false);
 		} catch (err) {
 			console.error(err.message);
 		}
@@ -193,6 +223,7 @@ export default function Profile({ match }) {
 		}
 	};
 
+	//* Create new review
 	const onSubmitReview = async (e) => {
 		e.preventDefault();
 
@@ -207,7 +238,7 @@ export default function Profile({ match }) {
 			};
 
 			const response = await fetch(
-				'http://localhost:4001/user/post',
+				'http://localhost:4001/user/review',
 				{
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
@@ -231,31 +262,7 @@ export default function Profile({ match }) {
 		}
 	};
 
-	const [isModalVisible, setIsModalVisible] =
-		useState(false);
-
-	const [modalText, setModalText] = useState('');
-
-	const showModal = () => {
-		setIsModalVisible(true);
-	};
-
-	const handleOk = () => {
-		editBio();
-		setIsModalVisible(false);
-	};
-
-	const handleCancel = () => {
-		setIsModalVisible(false);
-	};
-
-	let page = 0;
-
-	const fetchMorePosts = () => {
-		setPosts(dispatch, page);
-		page++;
-	};
-
+	//* Rating choices
 	const desc = [
 		'terrible',
 		'bad',
@@ -268,76 +275,7 @@ export default function Profile({ match }) {
 		<>
 			<Navbar2 />
 			<ProfileContainer>
-				<ProfileCard>
-					<FileForm>
-						<FileLabel htmlFor='pp-upload'>
-							{profileInfo.profileImage == null ? (
-								<ImageContainer>
-									<Avatar
-										size={180}
-										icon={<UserOutlined />}
-										style={
-											showMenu === true
-												? { zIndex: '-1' }
-												: { zIndex: '0' }
-										}
-									/>
-									<Caption>(Change profile photo)</Caption>
-								</ImageContainer>
-							) : (
-								<ImageContainer>
-									<ProfileImage
-										src={
-											process.env.REACT_APP_PUBLIC_FOLDER +
-											`${profileInfo.profileImage}`
-										}
-										alt=''
-									/>
-									<Caption>(Change profile photo)</Caption>
-								</ImageContainer>
-							)}
-						</FileLabel>
-						<File
-							type='file'
-							name='profileImage'
-							id='pp-upload'
-							onChange={changeProfilePic}
-						/>
-					</FileForm>
-					<BioContainer>
-						<h1>
-							{userInfo.firstName} {userInfo.lastName}
-						</h1>
-						<h2>
-							{profileInfo.bio == null
-								? 'Bio not written'
-								: profileInfo.bio}
-						</h2>
-						<Special>
-							<EditOutlined />
-							<Special2 onClick={showModal}>
-								Edit bio
-							</Special2>
-							<Modal
-								title='Edit Bio'
-								visible={isModalVisible}
-								onOk={handleOk}
-								okText='Submit Changes'
-								onCancel={handleCancel}
-							>
-								<ModalInput
-									type='text'
-									name='bio'
-									placeholder='Write new bio...'
-									value={modalText}
-									onChange={(e) =>
-										setModalText(e.target.value)
-									}
-								/>
-							</Modal>
-						</Special>
-					</BioContainer>
-				</ProfileCard>
+				<ProfileHeader match={match} />
 				<PostsContainer>
 					<h1>Posts & Reviews</h1>
 					<Tabs
@@ -388,44 +326,23 @@ export default function Profile({ match }) {
 								<PostButton type='submit'>Send</PostButton>
 							</InputContainer>
 							<PostContainer2>
-								<InfiniteScroll
-									// totalPages = posts.length / 2 ? false, : true
-									dataLength={posts.length}
-									next={fetchMorePosts}
-									hasMore={
-										totalPages === posts.length / 2
-											? false
-											: true
-									}
-									loader={
-										<Space
-											size='middle'
-											className='spinner'
-										>
-											<Spin size='large'></Spin>
-										</Space>
-									}
-									height={300}
-									scrollThreshold='100px'
-								>
-									{posts != null ? (
-										posts.map((post, idx) => {
-											return (
-												<Post
-													key={idx}
-													postInfo={post}
-												></Post>
-											);
-										})
+								{items.map((post, idx) =>
+									idx + 1 === items.length ? (
+										<Post
+											reference={lastItemRef}
+											key={idx}
+											postInfo={post}
+										></Post>
 									) : (
-										<Space
-											size='middle'
-											className='spinner'
-										>
-											<Spin size='large'></Spin>
-										</Space>
-									)}
-								</InfiniteScroll>
+										<Post key={idx} postInfo={post}></Post>
+									)
+								)}
+
+								{isLoading && (
+									<Space size='middle' className='spinner'>
+										<Spin size='large'></Spin>
+									</Space>
+								)}
 							</PostContainer2>
 						</TabPane>
 						<TabPane tab='Reviews' key='2'>
@@ -481,46 +398,28 @@ export default function Profile({ match }) {
 									Send
 								</PostButton>
 							</InputContainer>
-							<PostContainer2>
-								{/* <InfiniteScroll
-									// totalPages = posts.length / 2 ? false, : true
-									dataLength={posts.length}
-									next={fetchMorePosts}
-									hasMore={
-										totalPages === posts.length / 2
-											? false
-											: true
-									}
-									loader={
-										<Space
-											size='middle'
-											className='spinner'
-										>
-											<Spin size='large'></Spin>
-										</Space>
-									}
-									height={300}
-									scrollThreshold='100px'
-								>
-									{posts != null ? (
-										posts.map((post, idx) => {
-											return (
-												<Post
-													key={idx}
-													postInfo={post}
-												></Post>
-											);
-										})
+							<PostContainer3>
+								{reviews.map((review, idx) =>
+									idx + 1 === reviews.length ? (
+										<Review
+											reference={lastReviewRef}
+											key={idx}
+											reviewInfo={review}
+										></Review>
 									) : (
-										<Space
-											size='middle'
-											className='spinner'
-										>
-											<Spin size='large'></Spin>
-										</Space>
-									)}
-								</InfiniteScroll> */}
-							</PostContainer2>
+										<Review
+											key={idx}
+											reviewInfo={review}
+										></Review>
+									)
+								)}
+
+								{reviewIsLoading && (
+									<Space size='middle' className='spinner'>
+										<Spin size='large'></Spin>
+									</Space>
+								)}
+							</PostContainer3>
 						</TabPane>
 					</Tabs>
 				</PostsContainer>
