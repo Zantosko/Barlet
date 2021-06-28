@@ -1,23 +1,23 @@
 {
-  "development": {
-    "username": "fdrshham",
-    "password": "ePKiMf84__rWODOR5HScNbMr_uBFYMSZ",
-    "database": "fdrshham",
-    "host": "hansken.db.elephantsql.com",
-    "dialect": "postgres"
-  },
-  "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
-  },
-  "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
-  }
+	"development": {
+		"username": "jjjoakjovvzlob",
+		"password": "58200453576bedb366a644d087971a9ee7b531497e7a12fa2ddb1b43155cf18a",
+		"database": "ddsc71cresfn5m",
+		"host": "ec2-34-195-143-54.compute-1.amazonaws.com",
+		"dialect": "postgres"
+	},
+	"test": {
+		"username": "root",
+		"password": null,
+		"database": "database_test",
+		"host": "127.0.0.1",
+		"dialect": "postgres"
+	},
+	"production": {
+		"username": "root",
+		"password": null,
+		"database": "database_production",
+		"host": "127.0.0.1",
+		"dialect": "postgres"
+	}
 }
