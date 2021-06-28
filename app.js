@@ -3,13 +3,23 @@ const http = require('http');
 const app = express();
 const cors = require('cors');
 const path = require('path');
-const { Client } = require('pg');
+const { Sequelize } = require('sequelize');
+const pg = require('pg');
 
-const client = new Client({
-	connectionString: process.env.HEROKU_POSTGRESQL_JADE_URL,
-});
-
-client.connect();
+pg.defaults.ssl = true;
+const sequelize = new Sequelize(
+	process.env.HEROKU_POSTGRESQL_JADE_URL,
+	{
+		logging: false,
+		dialectOptions: {
+			ssl: {
+				require: true,
+				rejectUnauthorized: false,
+			},
+		},
+	}
+);
+(async () => await sequelize.sync({ alter: true }))();
 
 const port = process.env.PORT || 4001;
 
