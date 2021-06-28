@@ -4,6 +4,12 @@
 
 This is a social media app that is mix of Twitter and Yelp, but with an emphasis on bars/pubs. Key features of this project include rendering nearest bar locations using React-Google-Maps, photo uploads to the server using Multer, and incorporating an infinite scroll using the Intersection Observer API. This is only version 1, future updates coming soon.
 
+## Links
+
+<a href='https://zachary-antosko.medium.com/barlet-551e0d650ed1'>Medium Article</a>
+
+<a href='https://youtu.be/C5_SngzzMrE'>Demo Video</a>
+
 ## Wire-framing
 
 <p align='center'>

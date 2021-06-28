@@ -60,6 +60,7 @@ export const ProfileImage = styled.img`
 	width: 100%;
 	border-radius: 50%;
 	border: 3px solid #08aeef;
+	overflow: hidden;
 `;
 
 export const Caption = styled.span`

@@ -43,12 +43,13 @@ export const PostImage = styled.img`
 	height: 100px;
 	border-radius: 50%;
 	margin-bottom: 5px;
+	overflow: hidden;
 `;
 
 export const UserName = styled.p``;
 
 export const ContentContainer = styled.div`
-	width: 60%;
+	width: 70%;
 	height: ${(props) => (props.review ? '150px' : '80px')};
 	display: flex;
 	flex-direction: column;
