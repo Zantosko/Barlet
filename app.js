@@ -3,6 +3,13 @@ const http = require('http');
 const app = express();
 const cors = require('cors');
 const path = require('path');
+const { Client } = require('pg');
+
+const client = new Client({
+	connectionString: process.env.HEROKU_POSTGRESQL_JADE_URL,
+});
+
+client.connect();
 
 const port = process.env.PORT || 4001;
 
