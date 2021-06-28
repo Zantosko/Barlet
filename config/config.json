@@ -15,6 +15,10 @@
 	},
 	"production": {
 		"dialect": "postgres",
+		"username": "jjjoakjovvzlob",
+		"password": "58200453576bedb366a644d087971a9ee7b531497e7a12fa2ddb1b43155cf18a",
+		"database": "ddsc71cresfn5m",
+		"host": "ec2-34-195-143-54.compute-1.amazonaws.com",
 		"use_env_variable": "HEROKU_POSTGRESQL_JADE_URL"
 	}
 }
