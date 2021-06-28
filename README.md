@@ -29,10 +29,16 @@ This is a social media app that is mix of Twitter and Yelp, but with an emphasis
 ## Website Color Palette
 
 <p align='center'>
-  <img src='client/src/assets/screenshots/ColorPalette.png' height='300' width='500'/>
+  <img src='client/src/assets/screenshots/ColorPalette.png' height='400' width='500'/>
 </p>
 
 ## Key Features
+
+- **Find closest bars in your area** - This feature allows a user find the closest 20 bars in their area. By default the map radius is set to the Houston area, but if user clicks on the compass icon it will find their current location (must have location enabled on browser) and find the closest 20 bars to them. Users also have the option to scroll away from the set radius or zoom in and out. Once this occurs the map component will re-render a new set of bars based on the given radius.
+
+- **Infinite Scroll** - Like any other social media application a user can submit posts/reviews and scroll through them. Instead of creating multiple pages for each set of posts, an infinite scroll was implemented to fetch the next set of posts (paginate) once a certain intersection point is reached. The last post will then trigger a reference and callback a function to either increment page number or stop anymore posts from being displayed on the page if all posts are shown.
+
+- **Image Uploading** - This allows a user change their profile pic to any picture on their local machine (file extension limited to specific types: .jpg, .jpeg, .png) (max file size allowed is 1.5MB).
 
 ## Technologies Used
 
