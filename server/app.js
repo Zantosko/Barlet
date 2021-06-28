@@ -16,6 +16,10 @@ app.use(
 app.use(express.json());
 app.use(cors());
 
+app.use(
+	express.static(path.join(__dirname, 'client/build'))
+);
+
 //* Routes
 
 //? Index Routes
@@ -29,6 +33,12 @@ app.use('/user', require('./routes/user'));
 
 //? Livefeed Routes
 app.use('/livefeed', require('./routes/livefeed'));
+
+app.get('*', (req, res) => {
+	res.sendFile(
+		path.join(__dirname + '/client/build/index.html')
+	);
+});
 
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
