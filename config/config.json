@@ -14,11 +14,7 @@
 		"dialect": "postgres"
 	},
 	"production": {
-		"username": "fdrshham",
-		"password": "ePKiMf84__rWODOR5HScNbMr_uBFYMSZ",
-		"database": "fdrshham",
-		"host": "hansken.db.elephantsql.com",
 		"dialect": "postgres",
-		"use_env_variable": "DATABASE_URL"
+		"use_env_variable": "HEROKU_POSTGRESQL_JADE_URL"
 	}
 }
