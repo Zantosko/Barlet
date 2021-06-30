@@ -16,9 +16,12 @@ app.use(
 app.use(express.json());
 app.use(cors());
 
-app.use(
-	express.static(path.join(__dirname, 'client/build'))
-);
+if (process.env.NODE_ENV === 'production') {
+	//points to index.js in client
+	app.use(
+		express.static(path.join(__dirname, 'client/build'))
+	);
+}
 
 //* Routes
 
