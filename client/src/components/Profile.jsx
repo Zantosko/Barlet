@@ -145,7 +145,7 @@ export default function Profile({ match }) {
 			);
 
 			const response = await fetch(
-				`http://localhost:4001/user/post?page=${pageNum}&size=2`,
+				`/user/post?page=${pageNum}&size=2`,
 				{
 					method: 'GET',
 					headers: { token: localStorage.token },
@@ -169,7 +169,7 @@ export default function Profile({ match }) {
 				setTimeout(resolve, 500)
 			);
 			const response = await fetch(
-				`http://localhost:4001/user/review?page=${pageNum}&size=2`,
+				`/user/review?page=${pageNum}&size=2`,
 				{
 					method: 'GET',
 					headers: { token: localStorage.token },
@@ -198,14 +198,11 @@ export default function Profile({ match }) {
 				userId: convertIdToNumber,
 			};
 
-			const response = await fetch(
-				'http://localhost:4001/user/post',
-				{
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(body),
-				}
-			);
+			const response = await fetch('/user/post', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(body),
+			});
 
 			const parseResponse = await response.json();
 
@@ -236,14 +233,11 @@ export default function Profile({ match }) {
 				userId: convertIdToNumber,
 			};
 
-			const response = await fetch(
-				'http://localhost:4001/user/review',
-				{
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(body),
-				}
-			);
+			const response = await fetch('/user/review', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(body),
+			});
 
 			const parseResponse = await response.json();
 
