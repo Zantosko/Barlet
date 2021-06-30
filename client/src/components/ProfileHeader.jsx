@@ -65,7 +65,7 @@ export default function ProfileHeader({ match }) {
 					file.type === 'image/png'
 				) {
 					const response = await fetch(
-						'http://localhost:4001/user/profile-pic',
+						'/user/profile-pic',
 						{
 							method: 'PUT',
 							headers: { token: localStorage.token },
@@ -96,14 +96,11 @@ export default function ProfileHeader({ match }) {
 				userId: convertIdToNumber,
 			};
 
-			const response = await fetch(
-				'http://localhost:4001/user/update-bio',
-				{
-					method: 'PUT',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(body),
-				}
-			);
+			const response = await fetch('/user/update-bio', {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(body),
+			});
 
 			const parseResponse = await response.json();
 

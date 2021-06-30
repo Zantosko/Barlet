@@ -66,14 +66,11 @@ export default function GlobalPost({
 		const body = {
 			id: id,
 		};
-		const response = await fetch(
-			'http://localhost:4001/livefeed/post-data',
-			{
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(body),
-			}
-		);
+		const response = await fetch('/livefeed/post-data', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(body),
+		});
 		const parseResponse = await response.json();
 
 		await setPostData({

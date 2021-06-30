@@ -47,14 +47,11 @@ export default function Post({ postInfo, reference }) {
 			const body = {
 				id: id,
 			};
-			const response = await fetch(
-				'http://localhost:4001/user/post',
-				{
-					method: 'DELETE',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(body),
-				}
-			);
+			const response = await fetch('/user/post', {
+				method: 'DELETE',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(body),
+			});
 
 			const parseResponse = await response.json();
 

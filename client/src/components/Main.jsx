@@ -28,13 +28,10 @@ export default function Main() {
 
 	const isAuth = async () => {
 		try {
-			const response = await fetch(
-				'http://localhost:4001/auth/is-verified',
-				{
-					method: 'GET',
-					headers: { token: localStorage.token },
-				}
-			);
+			const response = await fetch('/auth/is-verified', {
+				method: 'GET',
+				headers: { token: localStorage.token },
+			});
 
 			const parseResponse = await response.json();
 

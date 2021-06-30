@@ -2,7 +2,7 @@ import { GET_USER_INFO } from '../action-types/userInfo-action-type';
 
 export const setUserInfo = async (dispatch) => {
 	try {
-		const response = await fetch('http://localhost:4001/', {
+		const response = await fetch('/', {
 			method: 'GET',
 			headers: { token: localStorage.token },
 		});

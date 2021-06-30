@@ -40,7 +40,7 @@ export default function LiveFeedContent() {
 			);
 
 			const response = await fetch(
-				`http://localhost:4001/livefeed/posts?page=${pageNum}&size=1`,
+				`/livefeed/posts?page=${pageNum}&size=1`,
 				{
 					method: 'GET',
 				}

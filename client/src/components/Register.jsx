@@ -50,14 +50,11 @@ export default function Register() {
 				rePassword,
 			};
 
-			const response = await fetch(
-				'http://localhost:4001/auth/register',
-				{
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(body),
-				}
-			);
+			const response = await fetch('/auth/register', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(body),
+			});
 
 			const parseResponse = await response.json();
 
