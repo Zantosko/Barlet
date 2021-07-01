@@ -72,7 +72,7 @@ export default function GlobalPost({
 			body: JSON.stringify(body),
 		});
 		const parseResponse = await response.json();
-		console.log(response);
+		console.log(body);
 
 		await setPostData({
 			username: parseResponse[0].username,
