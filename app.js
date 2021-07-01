@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'production') {
 //* Routes
 
 //? Index Routes
-app.use('/', require('./routes/index'));
+app.use('/ind', require('./routes/index'));
 
 //? Authorization Routes
 app.use('/auth', require('./routes/jwtAuth'));

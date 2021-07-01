@@ -2,7 +2,7 @@ import { GET_PROFILE_INFO } from '../action-types/profileInfo-action-type';
 
 export const setProfileInfo = async (dispatch) => {
 	try {
-		const response = await fetch('/profile', {
+		const response = await fetch('/ind/profile', {
 			method: 'GET',
 			headers: { token: localStorage.token },
 		});
