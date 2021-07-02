@@ -10,22 +10,36 @@ const authorization = require('../middleware/authorization');
 const path = require('path');
 const multer = require('multer');
 const moment = require('moment');
+const fs = require('fs');
+const util = require('util');
+const unlinkFile = util.promisify(fs.unlink);
 
-const multerConfig = multer.diskStorage({
-	destination: (req, file, callback) => {
-		callback(null, 'public/uploads/');
-	},
-	filename: (req, file, callback) => {
-		const ext = file.mimetype.split('/')[1];
-		callback(null, `image-${Date.now()}.${ext}`);
-	},
-});
+const { uploadFile, getFileStream } = require('./s3');
+
+// const multerConfig = multer.diskStorage({
+// 	destination: (req, file, callback) => {
+// 		callback(null, 'public/uploads/');
+// 	},
+// 	filename: (req, file, callback) => {
+// 		const ext = file.mimetype.split('/')[1];
+// 		callback(null, `image-${Date.now()}.${ext}`);
+// 	},
+// });
 
 const upload = multer({
-	storage: multerConfig,
+	dest: 'public/uploads',
 });
 
 //* Profile Card Routes
+
+router.get('/profile-pic/:key', (req, res) => {
+	const key = req.params.key;
+	res.json(key);
+	// console.log(key);
+	// const readStream = getFileStream(key);
+	// console.log(readStream);
+});
+
 router.put(
 	'/profile-pic',
 	authorization,
@@ -38,12 +52,17 @@ router.put(
 		});
 
 		const { file } = req;
-		console.log(file);
+
+		const result = await uploadFile(file);
+		console.log(result);
+
+		await unlinkFile(file.path);
+
 		const profileImage = file.filename;
 		user.update({ profileImage });
-		res.status(200).json({
-			status: true,
-		});
+		res
+			.status(200)
+			.send({ imagePath: `/profile-pic/${result.Key}` });
 	}
 );
 

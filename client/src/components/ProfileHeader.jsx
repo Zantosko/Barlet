@@ -53,6 +53,14 @@ export default function ProfileHeader({ match }) {
 		setIsModalVisible(false);
 	};
 
+	// const [file, setFile] = useState()
+	// const [images, setImages] = useState([])
+
+	// const fileSelected = event => {
+	//   const file = event.target.files[0]
+	// 	setFile(file)
+	// }
+
 	//* Upload new profile photo
 	const changeProfilePic = async (e) => {
 		const file = e.target.files[0];
@@ -68,7 +76,9 @@ export default function ProfileHeader({ match }) {
 						'/user/profile-pic',
 						{
 							method: 'PUT',
-							headers: { token: localStorage.token },
+							headers: {
+								token: localStorage.token,
+							},
 							body: data,
 						}
 					);
@@ -85,6 +95,16 @@ export default function ProfileHeader({ match }) {
 			}
 		}
 	};
+
+	//* Access Profile Photo from S3
+	const fetchPhotoFromS3 = async (key) => {
+		const response = await fetch(`/profile-pic/${key}`);
+
+		const parseResponse = await response.json();
+		console.log(parseResponse);
+	};
+
+	fetchPhotoFromS3(profileInfo.profileImage);
 
 	//* Change bio
 	const editBio = async (e) => {
@@ -119,7 +139,7 @@ export default function ProfileHeader({ match }) {
 	return (
 		<>
 			<ProfileCard>
-				<FileForm>
+				<FileForm encType='multipart/form-data'>
 					<FileLabel htmlFor='pp-upload'>
 						{profileInfo.profileImage == null ? (
 							<ImageContainer>
@@ -137,10 +157,7 @@ export default function ProfileHeader({ match }) {
 						) : (
 							<ImageContainer>
 								<ProfileImage
-									src={
-										process.env.REACT_APP_PUBLIC_FOLDER +
-										`${profileInfo.profileImage}`
-									}
+									// src='profile-pic/4ce39a75b54c1ed511f5d78834eea52b'
 									alt=''
 								/>
 								<Caption>(Change profile photo)</Caption>
@@ -150,6 +167,7 @@ export default function ProfileHeader({ match }) {
 					<File
 						type='file'
 						name='profileImage'
+						accept='image/*'
 						id='pp-upload'
 						onChange={changeProfilePic}
 					/>
