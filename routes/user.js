@@ -33,11 +33,10 @@ const upload = multer({
 //* Profile Card Routes
 
 router.get('/profile-pic/:key', (req, res) => {
-	const key = req.params.key;
+	const { key } = req.body;
 	res.json(key);
-	// console.log(key);
-	// const readStream = getFileStream(key);
-	// console.log(readStream);
+	const readStream = getFileStream(key);
+	console.log(readStream);
 });
 
 router.put(
@@ -60,9 +59,7 @@ router.put(
 
 		const profileImage = file.filename;
 		user.update({ profileImage });
-		res
-			.status(200)
-			.send({ imagePath: `/profile-pic/${result.Key}` });
+		res.send({ imagePath: `/profile-pic/${result.Key}` });
 	}
 );
 

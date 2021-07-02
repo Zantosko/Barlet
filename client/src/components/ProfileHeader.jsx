@@ -97,14 +97,23 @@ export default function ProfileHeader({ match }) {
 	};
 
 	//* Access Profile Photo from S3
-	const fetchPhotoFromS3 = async (key) => {
-		const response = await fetch(`/profile-pic/${key}`);
+	// const fetchPhotoFromS3 = async (key) => {
+	// 	const body = {
+	// 		key,
+	// 	};
 
-		const parseResponse = await response.json();
-		console.log(parseResponse);
-	};
+	// 	const response = await fetch('/profile-pic', {
+	// 		method: 'GET',
+	// 		headers: { 'Content-Type': 'application/json' },
+	// 		body: JSON.stringify(body),
+	// 	});
+	// 	console.log(response);
 
-	fetchPhotoFromS3(profileInfo.profileImage);
+	// 	const parseResponse = await response.json();
+	// 	console.log(parseResponse);
+	// };
+
+	// fetchPhotoFromS3('137d94772a9fb3a48e8db80047affd52');
 
 	//* Change bio
 	const editBio = async (e) => {
@@ -157,7 +166,7 @@ export default function ProfileHeader({ match }) {
 						) : (
 							<ImageContainer>
 								<ProfileImage
-									// src='profile-pic/4ce39a75b54c1ed511f5d78834eea52b'
+									src={`/profile-pic/${profileInfo.profileImage}`}
 									alt=''
 								/>
 								<Caption>(Change profile photo)</Caption>
