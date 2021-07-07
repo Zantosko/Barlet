@@ -34,7 +34,6 @@ const upload = multer({
 
 router.get('/profile-pic/:key', (req, res) => {
 	const { key } = req.body;
-	res.json(key);
 	const readStream = getFileStream(key);
 	console.log(readStream);
 });
