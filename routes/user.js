@@ -16,16 +16,6 @@ const unlinkFile = util.promisify(fs.unlink);
 
 const { uploadFile, getFileStream } = require('./s3');
 
-// const multerConfig = multer.diskStorage({
-// 	destination: (req, file, callback) => {
-// 		callback(null, 'public/uploads/');
-// 	},
-// 	filename: (req, file, callback) => {
-// 		const ext = file.mimetype.split('/')[1];
-// 		callback(null, `image-${Date.now()}.${ext}`);
-// 	},
-// });
-
 const upload = multer({
 	dest: 'public/uploads',
 });
@@ -56,7 +46,7 @@ router.put(
 
 		await unlinkFile(file.path);
 
-		const profileImage = file.filename;
+		const profileImage = result.Location;
 		user.update({ profileImage });
 		res.send({ imagePath: `/profile-pic/${result.Key}` });
 	}

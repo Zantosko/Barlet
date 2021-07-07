@@ -166,7 +166,7 @@ export default function ProfileHeader({ match }) {
 						) : (
 							<ImageContainer>
 								<ProfileImage
-									src={`/profile-pic/${profileInfo.profileImage}`}
+									src={`${profileInfo.profileImage}`}
 									alt=''
 								/>
 								<Caption>(Change profile photo)</Caption>

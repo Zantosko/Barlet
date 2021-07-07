@@ -7,9 +7,6 @@ import {
 	ContentBox,
 	ReviewTitle,
 } from './styled-components/PostStyles';
-import { toast } from 'react-toastify';
-
-import { useSelector, useDispatch } from 'react-redux';
 
 export default function GlobalPost({
 	postInfo,
@@ -49,14 +46,6 @@ export default function GlobalPost({
 		}
 	};
 
-	const dispatch = useDispatch();
-
-	const profileInfo = useSelector(
-		(state) => state.profileInfo
-	);
-
-	const userInfo = useSelector((state) => state.userInfo);
-
 	const [postData, setPostData] = useState({
 		username: '',
 		profilePic: '',
@@ -92,12 +81,7 @@ export default function GlobalPost({
 				review={postInfo.title ? true : false}
 			>
 				<ImageContainer>
-					<PostImage
-						src={
-							process.env.REACT_APP_PUBLIC_FOLDER +
-							`${postData.profilePic}`
-						}
-					/>
+					<PostImage src={`${postData.profilePic}`} />
 					<p>@{postData.username}</p>
 				</ImageContainer>
 				<ContentBox>

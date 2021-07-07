@@ -10,7 +10,7 @@ import { Modal } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 export default function Post({ postInfo, reference }) {
 	const checkRank = (rank) => {
@@ -29,8 +29,6 @@ export default function Post({ postInfo, reference }) {
 				return '🔥';
 		}
 	};
-
-	const dispatch = useDispatch();
 
 	const profileInfo = useSelector(
 		(state) => state.profileInfo
@@ -82,12 +80,7 @@ export default function Post({ postInfo, reference }) {
 		<>
 			<Container ref={reference}>
 				<ImageContainer>
-					<PostImage
-						src={
-							process.env.REACT_APP_PUBLIC_FOLDER +
-							`${profileInfo.profileImage}`
-						}
-					/>
+					<PostImage src={`${profileInfo.profileImage}`} />
 					<p>@{userInfo.username}</p>
 				</ImageContainer>
 				<ContentContainer>

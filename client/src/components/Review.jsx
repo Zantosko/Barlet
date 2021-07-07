@@ -11,7 +11,7 @@ import { Modal } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 export default function Review({ reviewInfo, reference }) {
 	const checkRating = (rating) => {
@@ -30,8 +30,6 @@ export default function Review({ reviewInfo, reference }) {
 				return '⭐️⭐️⭐️';
 		}
 	};
-
-	const dispatch = useDispatch();
 
 	const profileInfo = useSelector(
 		(state) => state.profileInfo
@@ -83,12 +81,7 @@ export default function Review({ reviewInfo, reference }) {
 		<>
 			<Container review ref={reference}>
 				<ImageContainer>
-					<PostImage
-						src={
-							process.env.REACT_APP_PUBLIC_FOLDER +
-							`${profileInfo.profileImage}`
-						}
-					/>
+					<PostImage src={`${profileInfo.profileImage}`} />
 					<p>@{userInfo.username}</p>
 				</ImageContainer>
 				<ContentContainer review>
