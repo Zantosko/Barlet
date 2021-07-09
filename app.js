@@ -17,6 +17,7 @@ app.use(
 app.use(express.json());
 app.use(cors());
 
+//* Checks if server is in production mode
 if (process.env.NODE_ENV === 'production') {
 	//points to index.js in client
 	app.use(

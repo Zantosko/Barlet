@@ -53,14 +53,6 @@ export default function ProfileHeader({ match }) {
 		setIsModalVisible(false);
 	};
 
-	// const [file, setFile] = useState()
-	// const [images, setImages] = useState([])
-
-	// const fileSelected = event => {
-	//   const file = event.target.files[0]
-	// 	setFile(file)
-	// }
-
 	//* Upload new profile photo
 	const changeProfilePic = async (e) => {
 		const file = e.target.files[0];
@@ -95,25 +87,6 @@ export default function ProfileHeader({ match }) {
 			}
 		}
 	};
-
-	//* Access Profile Photo from S3
-	// const fetchPhotoFromS3 = async (key) => {
-	// 	const body = {
-	// 		key,
-	// 	};
-
-	// 	const response = await fetch('/profile-pic', {
-	// 		method: 'GET',
-	// 		headers: { 'Content-Type': 'application/json' },
-	// 		body: JSON.stringify(body),
-	// 	});
-	// 	console.log(response);
-
-	// 	const parseResponse = await response.json();
-	// 	console.log(parseResponse);
-	// };
-
-	// fetchPhotoFromS3('137d94772a9fb3a48e8db80047affd52');
 
 	//* Change bio
 	const editBio = async (e) => {
