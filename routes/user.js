@@ -14,8 +14,10 @@ const fs = require('fs');
 const util = require('util');
 const unlinkFile = util.promisify(fs.unlink);
 
+//* S3 imports
 const { uploadFile, getFileStream } = require('./s3');
 
+//* Multer upload var
 const upload = multer({
 	dest: 'public/uploads',
 });
