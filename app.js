@@ -46,6 +46,7 @@ app.get('*', (req, res) => {
 	);
 });
 
+//* Indicates server is running
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });
