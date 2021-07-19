@@ -75,6 +75,7 @@ export default function Profile({ match }) {
 	const [reviewHasMore, setReviewHasMore] = useState(true);
 	const reviewObserver = useRef();
 
+	//* Grabs initial info on page load
 	useEffect(() => {
 		setProfileInfo(dispatch);
 		getPosts(pageNumber);
