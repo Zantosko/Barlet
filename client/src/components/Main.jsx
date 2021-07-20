@@ -81,7 +81,7 @@ export default function Main() {
 					exact
 					path='/livefeed'
 					render={(props) =>
-						isAuthenticated === true ? (
+						isAuthenticated === false ? (
 							<LiveFeed {...props} />
 						) : (
 							<Redirect to='/login' />
