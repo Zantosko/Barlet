@@ -77,7 +77,7 @@ export default function Main() {
 						)
 					}
 				/>
-				{/* <Route
+				<Route
 					exact
 					path='/livefeed'
 					render={(props) =>
@@ -87,7 +87,7 @@ export default function Main() {
 							<Redirect to='/login' />
 						)
 					}
-				/> */}
+				/>
 				<Route
 					exact
 					path='/profile/:id'
