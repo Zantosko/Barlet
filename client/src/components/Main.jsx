@@ -70,14 +70,14 @@ export default function Main() {
 					exact
 					path='/login'
 					render={(props) =>
-						isAuthenticated === false ? (
+						isAuthenticated === true ? (
 							<Login {...props} />
 						) : (
 							<Redirect to='/livefeed' />
 						)
 					}
 				/>
-				<Route
+				{/* <Route
 					exact
 					path='/livefeed'
 					render={(props) =>
@@ -87,7 +87,7 @@ export default function Main() {
 							<Redirect to='/login' />
 						)
 					}
-				/>
+				/> */}
 				<Route
 					exact
 					path='/profile/:id'
