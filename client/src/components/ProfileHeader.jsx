@@ -24,6 +24,7 @@ import { toast } from 'react-toastify';
 // Redux Hooks
 import { useSelector, useDispatch } from 'react-redux';
 
+// Redux Actions
 import { setProfileInfo } from '../actions/profileInfo-actions';
 
 export default function ProfileHeader({ match }) {
