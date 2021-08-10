@@ -26,6 +26,7 @@ export default function Login() {
 	const username = useSelector((state) => state.username);
 	const password = useSelector((state) => state.password);
 
+	//* Handles form submission
 	const onSubmitForm = async (e) => {
 		e.preventDefault();
 

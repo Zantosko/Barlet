@@ -37,6 +37,7 @@ export default function Register() {
 		(state) => state.rePassword
 	);
 
+	//* Handles form submission
 	const onSubmitForm = async (e) => {
 		e.preventDefault();
 
