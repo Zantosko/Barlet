@@ -113,7 +113,7 @@ router.delete('/post', async (req, res) => {
 });
 
 /*
- * List posts
+ * Paginate Database for Posts
  */
 router.get('/post', authorization, async (req, res) => {
 	try {
@@ -181,6 +181,7 @@ router.post('/review', async (req, res) => {
 	}
 });
 
+//* Paginate Database for Reviews
 router.get('/review', authorization, async (req, res) => {
 	try {
 		const pageAsNumber = Number.parseInt(req.query.page);
