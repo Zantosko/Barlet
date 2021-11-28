@@ -43,7 +43,6 @@ export default function Main() {
 		}
 	};
 
-	// Check authentication on application mount
 	useEffect(() => {
 		isAuth();
 	}, []);
