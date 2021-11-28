@@ -43,6 +43,7 @@ export default function Main() {
 		}
 	};
 
+	// Check authentication on application mount
 	useEffect(() => {
 		isAuth();
 	}, []);
@@ -61,11 +62,7 @@ export default function Main() {
 						)
 					}
 				/>
-				<Route
-					exact
-					path='/register'
-					component={Register}
-				/>
+				<Route exact path='/register' component={Register} />
 				<Route
 					exact
 					path='/login'
