@@ -26,6 +26,7 @@ export default function Main() {
 	);
 	const dispatch = useDispatch();
 
+	// Checks authentication of user
 	const isAuth = async () => {
 		try {
 			const response = await fetch('/auth/is-verified', {
