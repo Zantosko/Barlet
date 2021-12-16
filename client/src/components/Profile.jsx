@@ -42,6 +42,7 @@ import { setReviewText } from '../actions/reviews/reviewText-actions';
 import { setTitle } from '../actions/reviews/title-actions';
 import ProfileHeader from './ProfileHeader';
 
+// Tabs for post and reviews
 const { TabPane } = Tabs;
 
 export default function Profile({ match }) {
@@ -51,9 +52,7 @@ export default function Profile({ match }) {
 	const showMenu = useSelector((state) => state.showMenu);
 	const rating = useSelector((state) => state.rating);
 	const title = useSelector((state) => state.title);
-	const reviewText = useSelector(
-		(state) => state.reviewText
-	);
+	const reviewText = useSelector((state) => state.reviewText);
 
 	//* Local state variables
 	//? Post state vars
@@ -66,12 +65,9 @@ export default function Profile({ match }) {
 
 	//? Review state vars
 	const [reviews, setReviews] = useState([]);
-	const [totalReviewPages, setTotalReviewPages] =
-		useState(0);
-	const [reviewPageNumber, setReviewPageNumber] =
-		useState(0);
-	const [reviewIsLoading, setReviewIsLoading] =
-		useState(false);
+	const [totalReviewPages, setTotalReviewPages] = useState(0);
+	const [reviewPageNumber, setReviewPageNumber] = useState(0);
+	const [reviewIsLoading, setReviewIsLoading] = useState(false);
 	const [reviewHasMore, setReviewHasMore] = useState(true);
 	const reviewObserver = useRef();
 
@@ -81,9 +77,7 @@ export default function Profile({ match }) {
 		getPosts(pageNumber);
 		setPageNumber((pageNumber) => pageNumber + 1);
 		getReviews(reviewPageNumber);
-		setReviewPageNumber(
-			(reviewPageNumber) => reviewPageNumber + 1
-		);
+		setReviewPageNumber((reviewPageNumber) => reviewPageNumber + 1);
 	}, []);
 
 	//* Function is called once last post is rendered
@@ -92,18 +86,16 @@ export default function Profile({ match }) {
 			if (isLoading) return;
 			if (observer.current) observer.current.disconnect();
 
-			observer.current = new IntersectionObserver(
-				(entries) => {
-					if (entries[0].isIntersecting && hasMore) {
-						if (pageNumber < totalPages) {
-							getPosts(pageNumber);
-							setPageNumber((pageNumber) => pageNumber + 1);
-						} else {
-							setHasMore(false);
-						}
+			observer.current = new IntersectionObserver((entries) => {
+				if (entries[0].isIntersecting && hasMore) {
+					if (pageNumber < totalPages) {
+						getPosts(pageNumber);
+						setPageNumber((pageNumber) => pageNumber + 1);
+					} else {
+						setHasMore(false);
 					}
 				}
-			);
+			});
 
 			if (node) observer.current.observe(node);
 		},
@@ -114,23 +106,20 @@ export default function Profile({ match }) {
 	const lastReviewRef = useCallback(
 		(node) => {
 			if (reviewIsLoading) return;
-			if (reviewObserver.current)
-				reviewObserver.current.disconnect();
+			if (reviewObserver.current) reviewObserver.current.disconnect();
 
-			reviewObserver.current = new IntersectionObserver(
-				(entries) => {
-					if (entries[0].isIntersecting && reviewHasMore) {
-						if (reviewPageNumber < totalReviewPages) {
-							getReviews(reviewPageNumber);
-							setReviewPageNumber(
-								(reviewPageNumber) => reviewPageNumber + 1
-							);
-						} else {
-							setReviewHasMore(false);
-						}
+			reviewObserver.current = new IntersectionObserver((entries) => {
+				if (entries[0].isIntersecting && reviewHasMore) {
+					if (reviewPageNumber < totalReviewPages) {
+						getReviews(reviewPageNumber);
+						setReviewPageNumber(
+							(reviewPageNumber) => reviewPageNumber + 1
+						);
+					} else {
+						setReviewHasMore(false);
 					}
 				}
-			);
+			});
 
 			if (node) reviewObserver.current.observe(node);
 		},
@@ -141,9 +130,7 @@ export default function Profile({ match }) {
 	const getPosts = async (pageNum) => {
 		try {
 			setIsLoading(true);
-			await new Promise((resolve) =>
-				setTimeout(resolve, 500)
-			);
+			await new Promise((resolve) => setTimeout(resolve, 500));
 
 			const response = await fetch(
 				`/user/post?page=${pageNum}&size=2`,
@@ -166,9 +153,7 @@ export default function Profile({ match }) {
 	const getReviews = async (pageNum) => {
 		try {
 			setReviewIsLoading(true);
-			await new Promise((resolve) =>
-				setTimeout(resolve, 500)
-			);
+			await new Promise((resolve) => setTimeout(resolve, 500));
 			const response = await fetch(
 				`/user/review?page=${pageNum}&size=2`,
 				{
@@ -257,13 +242,7 @@ export default function Profile({ match }) {
 	};
 
 	//* Rating choices
-	const desc = [
-		'terrible',
-		'bad',
-		'normal',
-		'good',
-		'wonderful',
-	];
+	const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
 
 	return (
 		<>
@@ -275,9 +254,7 @@ export default function Profile({ match }) {
 					<Tabs
 						defaultActiveKey='1'
 						style={
-							showMenu === true
-								? { zIndex: '-1' }
-								: { zIndex: '0' }
+							showMenu === true ? { zIndex: '-1' } : { zIndex: '0' }
 						}
 					>
 						<TabPane tab='Posts' key='1'>
@@ -311,9 +288,7 @@ export default function Profile({ match }) {
 										<Radio value={1}>🔥 High volume</Radio>
 										<Radio value={2}>🧊 Laid back</Radio>
 										<Radio value={3}>💀 Dead</Radio>
-										<Radio value={4}>
-											😎 College crowd
-										</Radio>
+										<Radio value={4}>😎 College crowd</Radio>
 										<Radio value={5}>👴 Older crowd</Radio>
 									</Radio.Group>
 								</RadioContainer>
@@ -358,9 +333,7 @@ export default function Profile({ match }) {
 									name='title'
 									placeholder='Headline for your review'
 									value={title}
-									onChange={(e) =>
-										setTitle(dispatch, e.target.value)
-									}
+									onChange={(e) => setTitle(dispatch, e.target.value)}
 								/>
 								<Alignment>
 									<h3>Review</h3>
@@ -401,10 +374,7 @@ export default function Profile({ match }) {
 											reviewInfo={review}
 										></Review>
 									) : (
-										<Review
-											key={idx}
-											reviewInfo={review}
-										></Review>
+										<Review key={idx} reviewInfo={review}></Review>
 									)
 								)}
 
