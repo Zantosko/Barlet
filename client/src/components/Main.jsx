@@ -20,7 +20,6 @@ import { setIsAuthenticated } from '../actions/auth-actions';
 // React Toastify Configuration
 toast.configure();
 
-// Holds all routes and then consumed in main App component
 export default function Main() {
 	const isAuthenticated = useSelector(
 		(state) => state.isAuthenticated
