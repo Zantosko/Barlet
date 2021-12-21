@@ -18,16 +18,14 @@ import {
 	IconSizer2,
 } from './styled-components/NavbarStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-	faBars,
-	faTimes,
-} from '@fortawesome/free-solid-svg-icons';
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
 export default function Navbar() {
 	const [showMenu, setShowMenu] = useState(false);
 	const size = useWindowSize();
 
+	//* When screen reaches certain break point the nav bar changes into a hamburger menu
 	let menu;
 
 	if (showMenu) {
