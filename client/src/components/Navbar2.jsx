@@ -18,10 +18,7 @@ import {
 	IconSizer2,
 } from './styled-components/NavbarStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-	faBars,
-	faTimes,
-} from '@fortawesome/free-solid-svg-icons';
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -58,22 +55,18 @@ export default function Navbar2() {
 						<MenuItems>LIVE FEED</MenuItems>
 					</Link>
 					<Line />
-					<Link
-						to={`/profile/${userInfo.id}`}
-						className='link'
-					>
+					<Link to={`/profile/${userInfo.id}`} className='link'>
 						<MenuItems>PROFILE</MenuItems>
 					</Link>
 					<Line />
-					<MenuItems onClick={(e) => logout(e)}>
-						LOG OUT
-					</MenuItems>
+					<MenuItems onClick={(e) => logout(e)}>LOG OUT</MenuItems>
 					<Line />
 				</MenuContainer>
 			</Overlay>
 		);
 	}
 
+	//* Logout user
 	const logout = (e) => {
 		e.preventDefault();
 		localStorage.removeItem('token');
@@ -96,23 +89,16 @@ export default function Navbar2() {
 								<Link to='/livefeed' className='link'>
 									<NavLink>Live Feed</NavLink>
 								</Link>
-								<Link
-									to={`/profile/${userInfo.id}`}
-									className='link'
-								>
+								<Link to={`/profile/${userInfo.id}`} className='link'>
 									<NavLink>Profile</NavLink>
 								</Link>
-								<Special onClick={(e) => logout(e)}>
-									Logout
-								</Special>
+								<Special onClick={(e) => logout(e)}>Logout</Special>
 							</>
 						) : (
 							<IconSizer2>
 								<FontAwesomeIcon
 									icon={faBars}
-									onClick={() =>
-										setShowMenu(dispatch, !showMenu)
-									}
+									onClick={() => setShowMenu(dispatch, !showMenu)}
 								/>
 							</IconSizer2>
 						)}
