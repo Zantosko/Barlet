@@ -66,7 +66,6 @@ export default function Navbar2() {
 		);
 	}
 
-	//* Logout user
 	const logout = (e) => {
 		e.preventDefault();
 		localStorage.removeItem('token');
