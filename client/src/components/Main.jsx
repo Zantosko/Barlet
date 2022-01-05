@@ -44,6 +44,7 @@ export default function Main() {
 		}
 	};
 
+	// Checks authentication when component mounts
 	useEffect(() => {
 		isAuth();
 	}, []);
