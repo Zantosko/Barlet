@@ -19,6 +19,7 @@ import Compass from '../assets/compass.svg';
 
 const libraries = ['places'];
 export default function Map() {
+	// Map sizing
 	const mapContainerStyle = {
 		width: '70vw',
 		height: '70vh',
@@ -45,18 +46,16 @@ export default function Map() {
 
 	const fetchPlaces = () => {
 		const bounds = mapRef.current.getBounds();
-		const service =
-			new window.google.maps.places.PlacesService(
-				mapRef.current
-			);
+		const service = new window.google.maps.places.PlacesService(
+			mapRef.current
+		);
 		const request = {
 			bounds: bounds,
 			type: ['bar'],
 		};
 		service.nearbySearch(request, (results, status) => {
 			if (
-				status ===
-				window.google.maps.places.PlacesServiceStatus.OK
+				status === window.google.maps.places.PlacesServiceStatus.OK
 			) {
 				setPlaces(results);
 			}
@@ -79,8 +78,7 @@ export default function Map() {
 	}
 
 	const { isLoaded, loadError } = useLoadScript({
-		googleMapsApiKey:
-			process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
 		libraries,
 	});
 
@@ -116,10 +114,7 @@ export default function Map() {
 							}}
 							icon={{
 								url: Icon,
-								scaledSize: new window.google.maps.Size(
-									30,
-									47
-								),
+								scaledSize: new window.google.maps.Size(30, 47),
 							}}
 							onClick={() => {
 								setSelected(place);
@@ -139,9 +134,7 @@ export default function Map() {
 						<div>
 							<img
 								src={
-									selected.photos
-										? selected.photos[0].getUrl()
-										: null
+									selected.photos ? selected.photos[0].getUrl() : null
 								}
 								alt='Photo Unavailable'
 								height='100'
@@ -174,12 +167,7 @@ function Locate({ panTo }) {
 				);
 			}}
 		>
-			<CompassIcon
-				src={Compass}
-				alt=''
-				width='50'
-				height='50'
-			/>
+			<CompassIcon src={Compass} alt='' width='50' height='50' />
 		</button>
 	);
 }
