@@ -19,6 +19,7 @@ import Compass from '../assets/compass.svg';
 
 const libraries = ['places'];
 export default function Map() {
+	// Set Map dimensions
 	const mapContainerStyle = {
 		width: '70vw',
 		height: '70vh',
