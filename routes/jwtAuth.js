@@ -8,7 +8,6 @@ const authorization = require('../middleware/authorization');
 //* Register Route
 router.post('/register', validInfo, async (req, res) => {
 	try {
-		// Destructure request body
 		const {
 			firstName,
 			lastName,
@@ -36,11 +35,10 @@ router.post('/register', validInfo, async (req, res) => {
 		const saltRound = 10;
 		const salt = await bcrypt.genSalt(saltRound);
 
-		const [bcryptPassword, bcryptRePassword] =
-			await Promise.all([
-				bcrypt.hash(password, salt),
-				bcrypt.hash(rePassword, salt),
-			]);
+		const [bcryptPassword, bcryptRePassword] = await Promise.all([
+			bcrypt.hash(password, salt),
+			bcrypt.hash(rePassword, salt),
+		]);
 
 		const newUser = await User.create({
 			firstName,
@@ -108,17 +106,13 @@ router.post('/login', validInfo, async (req, res) => {
 	}
 });
 
-router.get(
-	'/is-verified',
-	authorization,
-	async (req, res) => {
-		try {
-			res.json(true);
-		} catch (err) {
-			console.error(err.message);
-			res.status(500).send('Server Error');
-		}
+router.get('/is-verified', authorization, async (req, res) => {
+	try {
+		res.json(true);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send('Server Error');
 	}
-);
+});
 
 module.exports = router;
