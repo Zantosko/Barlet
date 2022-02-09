@@ -8,6 +8,7 @@ const authorization = require('../middleware/authorization');
 //* Register Route
 router.post('/register', validInfo, async (req, res) => {
 	try {
+		// Destructure request body
 		const {
 			firstName,
 			lastName,
